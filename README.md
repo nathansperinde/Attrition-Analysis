@@ -24,6 +24,12 @@ The project is still under development. The final model refinement, final interp
 * Test different classification thresholds.
 * Interpret model behavior using Odds Ratios, feature importance and SHAP values.
 
+## Data Source
+
+The dataset used in this project is a public IBM HR Analytics dataset. It is used for educational and analytical purposes to explore employee attrition patterns and build predictive models.
+
+https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset
+
 ## Dataset
 
 The cleaned dataset contains 1,470 employee records and 43 columns.
@@ -71,11 +77,23 @@ In addition to the original variables, the cleaned dataset includes engineered c
 
 Some columns, such as identifiers or constant variables, may be retained in the cleaned dataset but are not necessarily used as predictive features in the modeling stage.
 
-## Data Source
+## Variable Scales
 
-The dataset used in this project is a public IBM HR Analytics dataset. It is used for educational and analytical purposes to explore employee attrition patterns and build predictive models.
+Some variables in the IBM HR Employee Attrition dataset are encoded as numerical values, but they represent predefined ordinal categories. For this reason, these variables were mapped into descriptive labels during the data preparation stage.
 
-https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset
+| Variable | Scale |
+|---|---|
+| Education | 1 = Below College, 2 = College, 3 = Bachelor, 4 = Master, 5 = Doctor |
+| EnvironmentSatisfaction | 1 = Low, 2 = Medium, 3 = High, 4 = Very High |
+| JobInvolvement | 1 = Low, 2 = Medium, 3 = High, 4 = Very High |
+| JobSatisfaction | 1 = Low, 2 = Medium, 3 = High, 4 = Very High |
+| PerformanceRating | 1 = Low, 2 = Good, 3 = Excellent, 4 = Outstanding |
+| RelationshipSatisfaction | 1 = Low, 2 = Medium, 3 = High, 4 = Very High |
+| WorkLifeBalance | 1 = Bad, 2 = Good, 3 = Better, 4 = Best |
+
+These mappings were applied to improve interpretability in the exploratory data analysis, statistical tests, model interpretation, and business insights.
+
+In addition to these predefined scales, some continuous variables were grouped into categorical ranges, such as age groups, tenure groups, income groups, distance from home groups, and career stage groups.
 
 ## Methodology
 
