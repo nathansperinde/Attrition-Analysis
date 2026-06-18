@@ -184,6 +184,167 @@ def run_cross_validation_mixed(
     return pd.DataFrame(cv_results)
 
 
+def run_cv_gap_analysis_mixed(
+    df,
+    models_dict,
+    estimators_dict,
+    target="AttritionFlag",
+    n_splits=10,
+    random_state=42,
+    scale_numeric_for=None
+):
+    
+    if scale_numeric_for is None:
+        scale_numeric_for = ["Logistic Regression", "Logistic Regression Balanced"]
+    
+    cv = StratifiedKFold(
+        n_splits=n_splits,
+        shuffle=True,
+        random_state=random_state
+    )
+    
+    gap_results = []
+    
+    for variable_set_name, model_info in models_dict.items():
+        numeric_vars = model_info["numeric_vars"]
+        categorical_vars = model_info["categorical_vars"]
+        
+        X, y = prepare_model_data(
+            df=df,
+            numeric_vars=numeric_vars,
+            categorical_vars=categorical_vars,
+            target=target
+        )
+        
+        numeric_cols_existing = [
+            col for col in numeric_vars
+            if col in X.columns
+        ]
+        
+        for model_name, model_config in estimators_dict.items():
+            
+            train_f1_scores = []
+            cv_f1_scores = []
+            
+            train_recall_scores = []
+            cv_recall_scores = []
+            
+            train_auc_scores = []
+            cv_auc_scores = []
+            
+            for train_index, test_index in cv.split(X, y):
+                X_train = X.iloc[train_index].copy()
+                X_test = X.iloc[test_index].copy()
+                y_train = y.iloc[train_index]
+                y_test = y.iloc[test_index]
+                
+                estimator = clone(model_config["estimator"])
+                balance_method = model_config.get("balance_method")
+                
+                if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
+                    scaler = StandardScaler()
+                    
+                    X_train[numeric_cols_existing] = scaler.fit_transform(
+                        X_train[numeric_cols_existing]
+                    )
+                    
+                    X_test[numeric_cols_existing] = scaler.transform(
+                        X_test[numeric_cols_existing]
+                    )
+                
+                if balance_method == "sample_weight":
+                    sample_weight = compute_sample_weight(
+                        class_weight="balanced",
+                        y=y_train
+                    )
+                    
+                    estimator.fit(
+                        X_train,
+                        y_train,
+                        sample_weight=sample_weight
+                    )
+                else:
+                    estimator.fit(X_train, y_train)
+                
+                # Train predictions
+                y_train_prob = estimator.predict_proba(X_train)[:, 1]
+                y_train_pred = (y_train_prob >= 0.50).astype(int)
+                
+                train_f1_scores.append(
+                    f1_score(y_train, y_train_pred, zero_division=0)
+                )
+                
+                train_recall_scores.append(
+                    recall_score(y_train, y_train_pred, zero_division=0)
+                )
+                
+                train_auc_scores.append(
+                    roc_auc_score(y_train, y_train_prob)
+                )
+                
+                # Validation fold predictions
+                y_test_prob = estimator.predict_proba(X_test)[:, 1]
+                y_test_pred = (y_test_prob >= 0.50).astype(int)
+                
+                cv_f1_scores.append(
+                    f1_score(y_test, y_test_pred, zero_division=0)
+                )
+                
+                cv_recall_scores.append(
+                    recall_score(y_test, y_test_pred, zero_division=0)
+                )
+                
+                cv_auc_scores.append(
+                    roc_auc_score(y_test, y_test_prob)
+                )
+            
+            train_f1_mean = np.mean(train_f1_scores)
+            cv_f1_mean = np.mean(cv_f1_scores)
+            f1_gap = train_f1_mean - cv_f1_mean
+            
+            train_recall_mean = np.mean(train_recall_scores)
+            cv_recall_mean = np.mean(cv_recall_scores)
+            recall_gap = train_recall_mean - cv_recall_mean
+            
+            train_auc_mean = np.mean(train_auc_scores)
+            cv_auc_mean = np.mean(cv_auc_scores)
+            auc_gap = train_auc_mean - cv_auc_mean
+            
+            if f1_gap > 0.15:
+                gap_diagnosis = "Possible overfitting"
+            elif train_f1_mean < 0.40 and cv_f1_mean < 0.40:
+                gap_diagnosis = "Possible underfitting"
+            elif f1_gap <= 0.05:
+                gap_diagnosis = "Stable generalization"
+            else:
+                gap_diagnosis = "Moderate gap"
+            
+            gap_results.append({
+                "Variable_Set": variable_set_name,
+                "Model": model_name,
+                
+                "Train_F1_Mean": round(train_f1_mean, 3),
+                "CV_F1_Mean": round(cv_f1_mean, 3),
+                "F1_Gap": round(f1_gap, 3),
+                
+                "Train_Recall_Mean": round(train_recall_mean, 3),
+                "CV_Recall_Mean": round(cv_recall_mean, 3),
+                "Recall_Gap": round(recall_gap, 3),
+                
+                "Train_AUC_Mean": round(train_auc_mean, 3),
+                "CV_AUC_Mean": round(cv_auc_mean, 3),
+                "AUC_Gap": round(auc_gap, 3),
+                
+                "Gap_Diagnosis": gap_diagnosis,
+                
+                "N_Numeric_Variables": len(numeric_vars),
+                "N_Categorical_Variables": len(categorical_vars),
+                "N_Features_After_Dummies": X.shape[1]
+            })
+    
+    return pd.DataFrame(gap_results)
+
+
 def run_model_comparison_mixed(
     df,
     models_dict,
