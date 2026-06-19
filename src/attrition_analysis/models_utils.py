@@ -1,6 +1,11 @@
 import pandas as pd
 import numpy as np
-from .data_selection import CATEGORICAL_MODEL_VARS, QUANTITATIVE_MODEL_VARS, MIXED_MODEL_VARS
+
+from .data_selection import (
+    CATEGORICAL_MODEL_VARS,
+    QUANTITATIVE_MODEL_VARS,
+    MIXED_MODEL_VARS
+)
 
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -19,6 +24,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold, RandomizedSearchCV
 from sklearn.base import clone
 from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+
 from xgboost import XGBClassifier
 
 
@@ -43,10 +50,27 @@ quantitative_models_dict_c = {
 mixed_models_dict_c = MIXED_MODEL_VARS
 
 
+def split_train_test_df(
+    df,
+    target="AttritionFlag",
+    test_size=0.30,
+    random_state=42
+):
+    
+    df_train, df_test = train_test_split(
+        df,
+        test_size=test_size,
+        random_state=random_state,
+        stratify=df[target]
+    )
+    
+    return df_train.copy(), df_test.copy()
+
+
 def prepare_model_data(df, numeric_vars, categorical_vars, target="AttritionFlag"):
     
     selected_vars = numeric_vars + categorical_vars
-    df_model = df[selected_vars + [target]].dropna()
+    df_model = df[selected_vars + [target]].dropna().copy()
     
     X = pd.get_dummies(
         df_model[selected_vars],
@@ -60,6 +84,111 @@ def prepare_model_data(df, numeric_vars, categorical_vars, target="AttritionFlag
     return X, y
 
 
+def prepare_train_test_model_data(
+    df_train,
+    df_test,
+    numeric_vars,
+    categorical_vars,
+    target="AttritionFlag"
+):
+    
+    selected_vars = numeric_vars + categorical_vars
+    
+    df_train_model = df_train[selected_vars + [target]].dropna().copy()
+    df_test_model = df_test[selected_vars + [target]].dropna().copy()
+    
+    X_train = pd.get_dummies(
+        df_train_model[selected_vars],
+        columns=categorical_vars,
+        drop_first=True
+    )
+    
+    X_test = pd.get_dummies(
+        df_test_model[selected_vars],
+        columns=categorical_vars,
+        drop_first=True
+    )
+    
+    X_test = X_test.reindex(columns=X_train.columns, fill_value=0)
+    
+    X_train = X_train.astype(float)
+    X_test = X_test.astype(float)
+    
+    y_train = df_train_model[target]
+    y_test = df_test_model[target]
+    
+    return X_train, X_test, y_train, y_test
+
+
+def build_model_pipeline(
+    estimator,
+    model_name,
+    numeric_vars,
+    x_columns,
+    scale_numeric_for=None
+):
+    
+    if scale_numeric_for is None:
+        scale_numeric_for = [
+            "Logistic Regression",
+            "Logistic Regression Balanced"
+        ]
+    
+    steps = []
+    
+    numeric_cols_existing = [
+        col for col in numeric_vars
+        if col in x_columns
+    ]
+    
+    if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ("numeric_scaler", StandardScaler(), numeric_cols_existing)
+            ],
+            remainder="passthrough"
+        )
+        
+        steps.append(("preprocessor", preprocessor))
+    
+    steps.append(("classifier", clone(estimator)))
+    
+    return Pipeline(steps=steps)
+
+
+def fit_model_with_optional_weights(
+    model,
+    X,
+    y,
+    balance_method=None
+):
+    
+    if balance_method == "sample_weight":
+        sample_weight = compute_sample_weight(
+            class_weight="balanced",
+            y=y
+        )
+        
+        model.fit(
+            X,
+            y,
+            classifier__sample_weight=sample_weight
+        )
+    
+    else:
+        model.fit(X, y)
+    
+    return model
+
+
+def take_rows(data, indices):
+    
+    if hasattr(data, "iloc"):
+        return data.iloc[indices]
+    
+    return data[indices]
+
+
 def run_cross_validation_mixed(
     df,
     models_dict,
@@ -71,7 +200,10 @@ def run_cross_validation_mixed(
 ):
     
     if scale_numeric_for is None:
-        scale_numeric_for = ["Logistic Regression", "Logistic Regression Balanced"]
+        scale_numeric_for = [
+            "Logistic Regression",
+            "Logistic Regression Balanced"
+        ]
     
     cv = StratifiedKFold(
         n_splits=n_splits,
@@ -115,7 +247,7 @@ def run_cross_validation_mixed(
                 estimator = clone(model_config["estimator"])
                 balance_method = model_config.get("balance_method")
                 
-                if model_name in scale_numeric_for and len(numeric_vars) > 0:
+                if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
                     scaler = StandardScaler()
                     
                     X_train[numeric_cols_existing] = scaler.fit_transform(
@@ -137,6 +269,7 @@ def run_cross_validation_mixed(
                         y_train,
                         sample_weight=sample_weight
                     )
+                
                 else:
                     estimator.fit(X_train, y_train)
                 
@@ -195,7 +328,10 @@ def run_cv_gap_analysis_mixed(
 ):
     
     if scale_numeric_for is None:
-        scale_numeric_for = ["Logistic Regression", "Logistic Regression Balanced"]
+        scale_numeric_for = [
+            "Logistic Regression",
+            "Logistic Regression Balanced"
+        ]
     
     cv = StratifiedKFold(
         n_splits=n_splits,
@@ -222,7 +358,6 @@ def run_cv_gap_analysis_mixed(
         ]
         
         for model_name, model_config in estimators_dict.items():
-            
             train_f1_scores = []
             cv_f1_scores = []
             
@@ -263,10 +398,10 @@ def run_cv_gap_analysis_mixed(
                         y_train,
                         sample_weight=sample_weight
                     )
+                
                 else:
                     estimator.fit(X_train, y_train)
                 
-                # Train predictions
                 y_train_prob = estimator.predict_proba(X_train)[:, 1]
                 y_train_pred = (y_train_prob >= 0.50).astype(int)
                 
@@ -282,7 +417,6 @@ def run_cv_gap_analysis_mixed(
                     roc_auc_score(y_train, y_train_prob)
                 )
                 
-                # Validation fold predictions
                 y_test_prob = estimator.predict_proba(X_test)[:, 1]
                 y_test_pred = (y_test_prob >= 0.50).astype(int)
                 
@@ -360,7 +494,10 @@ def run_model_comparison_mixed(
         thresholds = np.arange(0.20, 0.651, 0.025)
     
     if scale_numeric_for is None:
-        scale_numeric_for = ["Logistic Regression", "Logistic Regression Balanced"]
+        scale_numeric_for = [
+            "Logistic Regression",
+            "Logistic Regression Balanced"
+        ]
     
     general_results = []
     threshold_results = []
@@ -397,14 +534,14 @@ def run_model_comparison_mixed(
         interpretation_results[variable_set_name] = {}
         
         for model_name, model_config in estimators_dict.items():
-            estimator = model_config["estimator"]
+            estimator = clone(model_config["estimator"])
             balance_method = model_config.get("balance_method")
             
             X_train_model = X_train.copy()
             X_test_model = X_test.copy()
             scaler = None
             
-            if model_name in scale_numeric_for and len(numeric_vars) > 0:
+            if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
                 scaler = StandardScaler()
                 
                 X_train_model[numeric_cols_existing] = scaler.fit_transform(
@@ -426,6 +563,7 @@ def run_model_comparison_mixed(
                     y_train,
                     sample_weight=sample_weight
                 )
+            
             else:
                 estimator.fit(X_train_model, y_train)
             
@@ -439,8 +577,8 @@ def run_model_comparison_mixed(
                 "Threshold": 0.50,
                 "Accuracy": round(accuracy_score(y_test, y_pred_50), 3),
                 "Precision": round(precision_score(y_test, y_pred_50, zero_division=0), 3),
-                "Recall": round(recall_score(y_test, y_pred_50), 3),
-                "F1-score": round(f1_score(y_test, y_pred_50), 3),
+                "Recall": round(recall_score(y_test, y_pred_50, zero_division=0), 3),
+                "F1-score": round(f1_score(y_test, y_pred_50, zero_division=0), 3),
                 "AUC": round(auc, 3),
                 "N_Numeric_Variables": len(numeric_vars),
                 "N_Categorical_Variables": len(categorical_vars),
@@ -456,8 +594,8 @@ def run_model_comparison_mixed(
                     "Threshold": threshold,
                     "Accuracy": round(accuracy_score(y_test, y_pred_threshold), 3),
                     "Precision": round(precision_score(y_test, y_pred_threshold, zero_division=0), 3),
-                    "Recall": round(recall_score(y_test, y_pred_threshold), 3),
-                    "F1-score": round(f1_score(y_test, y_pred_threshold), 3),
+                    "Recall": round(recall_score(y_test, y_pred_threshold, zero_division=0), 3),
+                    "F1-score": round(f1_score(y_test, y_pred_threshold, zero_division=0), 3),
                     "AUC": round(auc, 3)
                 })
             
@@ -767,25 +905,27 @@ def tune_hyperparameters_top_combinations(
             target=target
         )
 
-        estimator = clone(model_config["estimator"])
+        estimator = model_config["estimator"]
         balance_method = model_config.get("balance_method")
 
-        steps = []
-
-        if model_name in scale_numeric_for:
-            steps.append(("scaler", StandardScaler()))
-
-        steps.append(("classifier", estimator))
+        pipeline = build_model_pipeline(
+            estimator=estimator,
+            model_name=model_name,
+            numeric_vars=numeric_vars,
+            x_columns=X.columns,
+            scale_numeric_for=scale_numeric_for
+        )
 
         random_search = RandomizedSearchCV(
-            estimator=Pipeline(steps=steps),
+            estimator=pipeline,
             param_distributions=param_distributions_dict[model_name],
             n_iter=n_iter,
             scoring=scoring,
             cv=cv,
             random_state=random_state,
             n_jobs=-1,
-            return_train_score=True
+            return_train_score=True,
+            refit=True
         )
 
         if balance_method == "sample_weight":
@@ -819,7 +959,7 @@ def tune_hyperparameters_top_combinations(
     return pd.DataFrame(tuning_results), best_models
 
 
-def evaluate_thresholds_optimized_models(
+def evaluate_thresholds_optimized_models_cv(
     df,
     models_dict,
     best_models,
@@ -827,17 +967,39 @@ def evaluate_thresholds_optimized_models(
     target="AttritionFlag",
     thresholds=None,
     test_size=0.30,
-    random_state=42
+    random_state=42,
+    n_splits=10,
+    df_test=None
 ):
     
     if thresholds is None:
         thresholds = np.arange(0.20, 0.751, 0.01)
     
-    threshold_results = []
+    if df_test is None:
+        df_train, df_test = split_train_test_df(
+            df=df,
+            target=target,
+            test_size=test_size,
+            random_state=random_state
+        )
+    else:
+        df_train = df.copy()
+        df_test = df_test.copy()
+    
+    cv = StratifiedKFold(
+        n_splits=n_splits,
+        shuffle=True,
+        random_state=random_state
+    )
+    
+    threshold_cv_results = []
+    best_threshold_rows = []
+    final_test_results = []
     confusion_results = {}
     fitted_models = {}
     
     for (variable_set_name, model_name), best_model in best_models.items():
+        
         model_info = models_dict[variable_set_name]
         model_config = estimators_dict[model_name]
         
@@ -845,84 +1007,139 @@ def evaluate_thresholds_optimized_models(
         categorical_vars = model_info["categorical_vars"]
         balance_method = model_config.get("balance_method")
         
-        X, y = prepare_model_data(
-            df=df,
+        X_train, X_test, y_train, y_test = prepare_train_test_model_data(
+            df_train=df_train,
+            df_test=df_test,
             numeric_vars=numeric_vars,
             categorical_vars=categorical_vars,
             target=target
         )
         
-        X_train, X_test, y_train, y_test = train_test_split(
-            X,
-            y,
-            test_size=test_size,
-            random_state=random_state,
-            stratify=y
-        )
+        y_train_prob_cv = np.zeros(len(y_train))
         
-        model = clone(best_model)
-        
-        if balance_method == "sample_weight":
-            sample_weight = compute_sample_weight(
-                class_weight="balanced",
-                y=y_train
+        for train_idx, valid_idx in cv.split(X_train, y_train):
+            
+            X_fold_train = take_rows(X_train, train_idx)
+            X_fold_valid = take_rows(X_train, valid_idx)
+            y_fold_train = take_rows(y_train, train_idx)
+            
+            fold_model = clone(best_model)
+            
+            fold_model = fit_model_with_optional_weights(
+                model=fold_model,
+                X=X_fold_train,
+                y=y_fold_train,
+                balance_method=balance_method
             )
             
-            model.fit(
-                X_train,
-                y_train,
-                classifier__sample_weight=sample_weight
-            )
-        else:
-            model.fit(X_train, y_train)
+            y_train_prob_cv[valid_idx] = fold_model.predict_proba(X_fold_valid)[:, 1]
         
-        y_prob = model.predict_proba(X_test)[:, 1]
-        auc = roc_auc_score(y_test, y_prob)
+        auc_cv = roc_auc_score(y_train, y_train_prob_cv)
         
-        confusion_results[(variable_set_name, model_name)] = {}
+        model_threshold_results = []
         
         for threshold in thresholds:
             threshold = round(threshold, 3)
-            y_pred = (y_prob >= threshold).astype(int)
+            y_train_pred_cv = (y_train_prob_cv >= threshold).astype(int)
             
-            threshold_results.append({
+            result = {
                 "Variable_Set": variable_set_name,
                 "Model": model_name,
                 "Threshold": threshold,
-                "Accuracy": round(accuracy_score(y_test, y_pred), 3),
-                "Precision": round(precision_score(y_test, y_pred, zero_division=0), 3),
-                "Recall": round(recall_score(y_test, y_pred, zero_division=0), 3),
-                "F1-score": round(f1_score(y_test, y_pred, zero_division=0), 3),
-                "AUC": round(auc, 3)
-            })
+                "Accuracy": accuracy_score(y_train, y_train_pred_cv),
+                "Precision": precision_score(y_train, y_train_pred_cv, zero_division=0),
+                "Recall": recall_score(y_train, y_train_pred_cv, zero_division=0),
+                "F1-score": f1_score(y_train, y_train_pred_cv, zero_division=0),
+                "AUC": auc_cv
+            }
             
-            confusion_results[(variable_set_name, model_name)][threshold] = confusion_matrix(
-                y_test,
-                y_pred
-            )
+            threshold_cv_results.append(result)
+            model_threshold_results.append(result)
+        
+        model_threshold_df = pd.DataFrame(model_threshold_results)
+        
+        best_threshold_row = (
+            model_threshold_df
+            .sort_values("F1-score", ascending=False)
+            .iloc[0]
+        )
+        
+        best_threshold = best_threshold_row["Threshold"]
+        best_threshold_rows.append(best_threshold_row.to_dict())
+        
+        final_model = clone(best_model)
+        
+        final_model = fit_model_with_optional_weights(
+            model=final_model,
+            X=X_train,
+            y=y_train,
+            balance_method=balance_method
+        )
+        
+        y_test_prob = final_model.predict_proba(X_test)[:, 1]
+        y_test_pred = (y_test_prob >= best_threshold).astype(int)
+        
+        final_test_results.append({
+            "Variable_Set": variable_set_name,
+            "Model": model_name,
+            "Threshold": best_threshold,
+            "Accuracy": accuracy_score(y_test, y_test_pred),
+            "Precision": precision_score(y_test, y_test_pred, zero_division=0),
+            "Recall": recall_score(y_test, y_test_pred, zero_division=0),
+            "F1-score": f1_score(y_test, y_test_pred, zero_division=0),
+            "AUC": roc_auc_score(y_test, y_test_prob)
+        })
+        
+        confusion_results[(variable_set_name, model_name)] = confusion_matrix(
+            y_test,
+            y_test_pred
+        )
         
         fitted_models[(variable_set_name, model_name)] = {
-            "model": model,
+            "model": final_model,
+            "best_threshold": best_threshold,
             "X_train": X_train,
             "X_test": X_test,
             "y_train": y_train,
             "y_test": y_test,
-            "y_prob": y_prob
+            "y_test_prob": y_test_prob,
+            "y_test_pred": y_test_pred
         }
     
-    threshold_comparison = pd.DataFrame(threshold_results)
+    threshold_cv_comparison = pd.DataFrame(threshold_cv_results)
+    best_thresholds_cv = pd.DataFrame(best_threshold_rows)
+    final_test_results_df = pd.DataFrame(final_test_results)
     
-    best_thresholds = (
-        threshold_comparison
-        .sort_values("F1-score", ascending=False)
-        .groupby(["Variable_Set", "Model"], as_index=False)
-        .first()
-        .sort_values("F1-score", ascending=False)
+    best_thresholds_cv = best_thresholds_cv.sort_values(
+        "F1-score",
+        ascending=False
     )
     
+    final_test_results_df = final_test_results_df.sort_values(
+        "F1-score",
+        ascending=False
+    )
+    
+    metric_cols = [
+        "Accuracy",
+        "Precision",
+        "Recall",
+        "F1-score",
+        "AUC"
+    ]
+    
+    for result_df in [
+        threshold_cv_comparison,
+        best_thresholds_cv,
+        final_test_results_df
+    ]:
+        result_df["Threshold"] = result_df["Threshold"].round(3)
+        result_df[metric_cols] = result_df[metric_cols].round(3)
+    
     return (
-        threshold_comparison,
-        best_thresholds,
+        threshold_cv_comparison,
+        best_thresholds_cv,
+        final_test_results_df,
         confusion_results,
         fitted_models
     )
