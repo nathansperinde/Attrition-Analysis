@@ -7,8 +7,13 @@ from .data_selection import (
     MIXED_MODEL_VARS
 )
 
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import (
+    train_test_split,
+    StratifiedKFold,
+    RandomizedSearchCV,
+    ParameterGrid
+)
+
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -17,16 +22,12 @@ from sklearn.metrics import (
     roc_auc_score,
     confusion_matrix
 )
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
-from sklearn.utils.class_weight import compute_sample_weight
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import StratifiedKFold, RandomizedSearchCV
 from sklearn.base import clone
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-
-from xgboost import XGBClassifier
 
 
 categorical_models_dict_c = {
@@ -50,6 +51,41 @@ quantitative_models_dict_c = {
 mixed_models_dict_c = MIXED_MODEL_VARS
 
 
+estimators_dict = {
+    
+    "Logistic Regression": {
+        "estimator": LogisticRegression(
+            max_iter=10000,
+            solver="liblinear"
+        )
+    },
+    
+    "Logistic Regression Balanced": {
+        "estimator": LogisticRegression(
+            max_iter=10000,
+            solver="liblinear",
+            class_weight="balanced"
+        )
+    }
+}
+
+
+param_distributions_dict = {
+
+    "Logistic Regression": {
+        "classifier__C": [0.01, 0.1, 1, 10, 100],
+        "classifier__penalty": ["l1", "l2"],
+        "classifier__solver": ["liblinear"]
+    },
+
+    "Logistic Regression Balanced": {
+        "classifier__C": [0.01, 0.1, 1, 10, 100],
+        "classifier__penalty": ["l1", "l2"],
+        "classifier__solver": ["liblinear"]
+    }
+}
+
+
 def split_train_test_df(
     df,
     target="AttritionFlag",
@@ -67,9 +103,15 @@ def split_train_test_df(
     return df_train.copy(), df_test.copy()
 
 
-def prepare_model_data(df, numeric_vars, categorical_vars, target="AttritionFlag"):
+def prepare_model_data(
+    df,
+    numeric_vars,
+    categorical_vars,
+    target="AttritionFlag"
+):
     
     selected_vars = numeric_vars + categorical_vars
+    
     df_model = df[selected_vars + [target]].dropna().copy()
     
     X = pd.get_dummies(
@@ -120,19 +162,12 @@ def prepare_train_test_model_data(
     return X_train, X_test, y_train, y_test
 
 
-def build_model_pipeline(
+def build_logistic_pipeline(
     estimator,
-    model_name,
     numeric_vars,
     x_columns,
-    scale_numeric_for=None
+    scale_numeric=True
 ):
-    
-    if scale_numeric_for is None:
-        scale_numeric_for = [
-            "Logistic Regression",
-            "Logistic Regression Balanced"
-        ]
     
     steps = []
     
@@ -141,7 +176,7 @@ def build_model_pipeline(
         if col in x_columns
     ]
     
-    if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
+    if scale_numeric and len(numeric_cols_existing) > 0:
         preprocessor = ColumnTransformer(
             transformers=[
                 ("numeric_scaler", StandardScaler(), numeric_cols_existing)
@@ -156,31 +191,6 @@ def build_model_pipeline(
     return Pipeline(steps=steps)
 
 
-def fit_model_with_optional_weights(
-    model,
-    X,
-    y,
-    balance_method=None
-):
-    
-    if balance_method == "sample_weight":
-        sample_weight = compute_sample_weight(
-            class_weight="balanced",
-            y=y
-        )
-        
-        model.fit(
-            X,
-            y,
-            classifier__sample_weight=sample_weight
-        )
-    
-    else:
-        model.fit(X, y)
-    
-    return model
-
-
 def take_rows(data, indices):
     
     if hasattr(data, "iloc"):
@@ -189,21 +199,71 @@ def take_rows(data, indices):
     return data[indices]
 
 
-def run_cross_validation_mixed(
+def get_pipeline_feature_names(fitted_pipeline, x_columns):
+    
+    if "preprocessor" not in fitted_pipeline.named_steps:
+        return list(x_columns)
+    
+    preprocessor = fitted_pipeline.named_steps["preprocessor"]
+    
+    numeric_cols = []
+    
+    for name, transformer, columns in preprocessor.transformers_:
+        if name == "numeric_scaler":
+            numeric_cols = list(columns)
+    
+    remainder_cols = [
+        col for col in x_columns
+        if col not in numeric_cols
+    ]
+    
+    return numeric_cols + remainder_cols
+
+
+def get_logistic_interpretation(fitted_pipeline, x_columns):
+    
+    classifier = fitted_pipeline.named_steps["classifier"]
+    feature_names = get_pipeline_feature_names(fitted_pipeline, x_columns)
+    
+    coefficients = classifier.coef_[0]
+    
+    if len(feature_names) != len(coefficients):
+        feature_names = [f"Feature_{i}" for i in range(len(coefficients))]
+    
+    interpretation_df = (
+        pd.DataFrame({
+            "Feature": feature_names,
+            "Coefficient": coefficients,
+            "Odds_Ratio": np.exp(coefficients)
+        })
+        .sort_values(by="Odds_Ratio", ascending=False)
+        .reset_index(drop=True)
+    )
+    
+    return interpretation_df
+
+
+def calculate_classification_metrics(y_true, y_pred, y_prob):
+    
+    return {
+        "Accuracy": accuracy_score(y_true, y_pred),
+        "Precision": precision_score(y_true, y_pred, zero_division=0),
+        "Recall": recall_score(y_true, y_pred, zero_division=0),
+        "F1-score": f1_score(y_true, y_pred, zero_division=0),
+        "AUC": roc_auc_score(y_true, y_prob)
+    }
+
+
+def run_logistic_cross_validation(
     df,
     models_dict,
-    estimators_dict,
+    estimators_dict=estimators_dict,
     target="AttritionFlag",
     n_splits=10,
     random_state=42,
-    scale_numeric_for=None
+    scale_numeric=True
 ):
-    
-    if scale_numeric_for is None:
-        scale_numeric_for = [
-            "Logistic Regression",
-            "Logistic Regression Balanced"
-        ]
+
     
     cv = StratifiedKFold(
         n_splits=n_splits,
@@ -214,6 +274,7 @@ def run_cross_validation_mixed(
     cv_results = []
     
     for variable_set_name, model_info in models_dict.items():
+        
         numeric_vars = model_info["numeric_vars"]
         categorical_vars = model_info["categorical_vars"]
         
@@ -224,12 +285,8 @@ def run_cross_validation_mixed(
             target=target
         )
         
-        numeric_cols_existing = [
-            col for col in numeric_vars
-            if col in X.columns
-        ]
-        
         for model_name, model_config in estimators_dict.items():
+            
             scores = {
                 "Accuracy": [],
                 "Precision": [],
@@ -238,77 +295,64 @@ def run_cross_validation_mixed(
                 "AUC": []
             }
             
-            for train_index, test_index in cv.split(X, y):
+            for train_index, valid_index in cv.split(X, y):
+                
                 X_train = X.iloc[train_index].copy()
-                X_test = X.iloc[test_index].copy()
+                X_valid = X.iloc[valid_index].copy()
                 y_train = y.iloc[train_index]
-                y_test = y.iloc[test_index]
+                y_valid = y.iloc[valid_index]
                 
-                estimator = clone(model_config["estimator"])
-                balance_method = model_config.get("balance_method")
+                pipeline = build_logistic_pipeline(
+                    estimator=model_config["estimator"],
+                    numeric_vars=numeric_vars,
+                    x_columns=X.columns,
+                    scale_numeric=scale_numeric
+                )
                 
-                if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
-                    scaler = StandardScaler()
-                    
-                    X_train[numeric_cols_existing] = scaler.fit_transform(
-                        X_train[numeric_cols_existing]
-                    )
-                    
-                    X_test[numeric_cols_existing] = scaler.transform(
-                        X_test[numeric_cols_existing]
-                    )
+                pipeline.fit(X_train, y_train)
                 
-                if balance_method == "sample_weight":
-                    sample_weight = compute_sample_weight(
-                        class_weight="balanced",
-                        y=y_train
-                    )
-                    
-                    estimator.fit(
-                        X_train,
-                        y_train,
-                        sample_weight=sample_weight
-                    )
-                
-                else:
-                    estimator.fit(X_train, y_train)
-                
-                y_prob = estimator.predict_proba(X_test)[:, 1]
+                y_prob = pipeline.predict_proba(X_valid)[:, 1]
                 y_pred = (y_prob >= 0.50).astype(int)
                 
                 scores["Accuracy"].append(
-                    accuracy_score(y_test, y_pred)
+                    accuracy_score(y_valid, y_pred)
                 )
                 
                 scores["Precision"].append(
-                    precision_score(y_test, y_pred, zero_division=0)
+                    precision_score(y_valid, y_pred, zero_division=0)
                 )
                 
                 scores["Recall"].append(
-                    recall_score(y_test, y_pred, zero_division=0)
+                    recall_score(y_valid, y_pred, zero_division=0)
                 )
                 
                 scores["F1"].append(
-                    f1_score(y_test, y_pred, zero_division=0)
+                    f1_score(y_valid, y_pred, zero_division=0)
                 )
                 
                 scores["AUC"].append(
-                    roc_auc_score(y_test, y_prob)
+                    roc_auc_score(y_valid, y_prob)
                 )
             
             cv_results.append({
                 "Variable_Set": variable_set_name,
                 "Model": model_name,
+                
                 "Accuracy_Mean": round(np.mean(scores["Accuracy"]), 3),
                 "Accuracy_Std": round(np.std(scores["Accuracy"]), 3),
+                
                 "Precision_Mean": round(np.mean(scores["Precision"]), 3),
                 "Precision_Std": round(np.std(scores["Precision"]), 3),
+                
                 "Recall_Mean": round(np.mean(scores["Recall"]), 3),
                 "Recall_Std": round(np.std(scores["Recall"]), 3),
+                
                 "F1_Mean": round(np.mean(scores["F1"]), 3),
                 "F1_Std": round(np.std(scores["F1"]), 3),
+                
                 "AUC_Mean": round(np.mean(scores["AUC"]), 3),
                 "AUC_Std": round(np.std(scores["AUC"]), 3),
+                
                 "N_Numeric_Variables": len(numeric_vars),
                 "N_Categorical_Variables": len(categorical_vars),
                 "N_Features_After_Dummies": X.shape[1]
@@ -317,21 +361,15 @@ def run_cross_validation_mixed(
     return pd.DataFrame(cv_results)
 
 
-def run_cv_gap_analysis_mixed(
+def run_logistic_gap_analysis(
     df,
     models_dict,
-    estimators_dict,
+    estimators_dict=estimators_dict,
     target="AttritionFlag",
     n_splits=10,
     random_state=42,
-    scale_numeric_for=None
+    scale_numeric=True
 ):
-    
-    if scale_numeric_for is None:
-        scale_numeric_for = [
-            "Logistic Regression",
-            "Logistic Regression Balanced"
-        ]
     
     cv = StratifiedKFold(
         n_splits=n_splits,
@@ -342,6 +380,7 @@ def run_cv_gap_analysis_mixed(
     gap_results = []
     
     for variable_set_name, model_info in models_dict.items():
+        
         numeric_vars = model_info["numeric_vars"]
         categorical_vars = model_info["categorical_vars"]
         
@@ -352,101 +391,78 @@ def run_cv_gap_analysis_mixed(
             target=target
         )
         
-        numeric_cols_existing = [
-            col for col in numeric_vars
-            if col in X.columns
-        ]
-        
         for model_name, model_config in estimators_dict.items():
+            
             train_f1_scores = []
-            cv_f1_scores = []
+            valid_f1_scores = []
             
             train_recall_scores = []
-            cv_recall_scores = []
+            valid_recall_scores = []
             
             train_auc_scores = []
-            cv_auc_scores = []
+            valid_auc_scores = []
             
-            for train_index, test_index in cv.split(X, y):
+            for train_index, valid_index in cv.split(X, y):
+                
                 X_train = X.iloc[train_index].copy()
-                X_test = X.iloc[test_index].copy()
+                X_valid = X.iloc[valid_index].copy()
                 y_train = y.iloc[train_index]
-                y_test = y.iloc[test_index]
+                y_valid = y.iloc[valid_index]
                 
-                estimator = clone(model_config["estimator"])
-                balance_method = model_config.get("balance_method")
+                pipeline = build_logistic_pipeline(
+                    estimator=model_config["estimator"],
+                    numeric_vars=numeric_vars,
+                    x_columns=X.columns,
+                    scale_numeric=scale_numeric
+                )
                 
-                if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
-                    scaler = StandardScaler()
-                    
-                    X_train[numeric_cols_existing] = scaler.fit_transform(
-                        X_train[numeric_cols_existing]
-                    )
-                    
-                    X_test[numeric_cols_existing] = scaler.transform(
-                        X_test[numeric_cols_existing]
-                    )
+                pipeline.fit(X_train, y_train)
                 
-                if balance_method == "sample_weight":
-                    sample_weight = compute_sample_weight(
-                        class_weight="balanced",
-                        y=y_train
-                    )
-                    
-                    estimator.fit(
-                        X_train,
-                        y_train,
-                        sample_weight=sample_weight
-                    )
-                
-                else:
-                    estimator.fit(X_train, y_train)
-                
-                y_train_prob = estimator.predict_proba(X_train)[:, 1]
+                y_train_prob = pipeline.predict_proba(X_train)[:, 1]
                 y_train_pred = (y_train_prob >= 0.50).astype(int)
+                
+                y_valid_prob = pipeline.predict_proba(X_valid)[:, 1]
+                y_valid_pred = (y_valid_prob >= 0.50).astype(int)
                 
                 train_f1_scores.append(
                     f1_score(y_train, y_train_pred, zero_division=0)
+                )
+                
+                valid_f1_scores.append(
+                    f1_score(y_valid, y_valid_pred, zero_division=0)
                 )
                 
                 train_recall_scores.append(
                     recall_score(y_train, y_train_pred, zero_division=0)
                 )
                 
+                valid_recall_scores.append(
+                    recall_score(y_valid, y_valid_pred, zero_division=0)
+                )
+                
                 train_auc_scores.append(
                     roc_auc_score(y_train, y_train_prob)
                 )
                 
-                y_test_prob = estimator.predict_proba(X_test)[:, 1]
-                y_test_pred = (y_test_prob >= 0.50).astype(int)
-                
-                cv_f1_scores.append(
-                    f1_score(y_test, y_test_pred, zero_division=0)
-                )
-                
-                cv_recall_scores.append(
-                    recall_score(y_test, y_test_pred, zero_division=0)
-                )
-                
-                cv_auc_scores.append(
-                    roc_auc_score(y_test, y_test_prob)
+                valid_auc_scores.append(
+                    roc_auc_score(y_valid, y_valid_prob)
                 )
             
             train_f1_mean = np.mean(train_f1_scores)
-            cv_f1_mean = np.mean(cv_f1_scores)
-            f1_gap = train_f1_mean - cv_f1_mean
+            valid_f1_mean = np.mean(valid_f1_scores)
+            f1_gap = train_f1_mean - valid_f1_mean
             
             train_recall_mean = np.mean(train_recall_scores)
-            cv_recall_mean = np.mean(cv_recall_scores)
-            recall_gap = train_recall_mean - cv_recall_mean
+            valid_recall_mean = np.mean(valid_recall_scores)
+            recall_gap = train_recall_mean - valid_recall_mean
             
             train_auc_mean = np.mean(train_auc_scores)
-            cv_auc_mean = np.mean(cv_auc_scores)
-            auc_gap = train_auc_mean - cv_auc_mean
+            valid_auc_mean = np.mean(valid_auc_scores)
+            auc_gap = train_auc_mean - valid_auc_mean
             
             if f1_gap > 0.15:
                 gap_diagnosis = "Possible overfitting"
-            elif train_f1_mean < 0.40 and cv_f1_mean < 0.40:
+            elif train_f1_mean < 0.40 and valid_f1_mean < 0.40:
                 gap_diagnosis = "Possible underfitting"
             elif f1_gap <= 0.05:
                 gap_diagnosis = "Stable generalization"
@@ -458,15 +474,15 @@ def run_cv_gap_analysis_mixed(
                 "Model": model_name,
                 
                 "Train_F1_Mean": round(train_f1_mean, 3),
-                "CV_F1_Mean": round(cv_f1_mean, 3),
+                "CV_F1_Mean": round(valid_f1_mean, 3),
                 "F1_Gap": round(f1_gap, 3),
                 
                 "Train_Recall_Mean": round(train_recall_mean, 3),
-                "CV_Recall_Mean": round(cv_recall_mean, 3),
+                "CV_Recall_Mean": round(valid_recall_mean, 3),
                 "Recall_Gap": round(recall_gap, 3),
                 
                 "Train_AUC_Mean": round(train_auc_mean, 3),
-                "CV_AUC_Mean": round(cv_auc_mean, 3),
+                "CV_AUC_Mean": round(valid_auc_mean, 3),
                 "AUC_Gap": round(auc_gap, 3),
                 
                 "Gap_Diagnosis": gap_diagnosis,
@@ -479,25 +495,19 @@ def run_cv_gap_analysis_mixed(
     return pd.DataFrame(gap_results)
 
 
-def run_model_comparison_mixed(
+def run_logistic_model_comparison(
     df,
     models_dict,
-    estimators_dict,
+    estimators_dict=estimators_dict,
     target="AttritionFlag",
     thresholds=None,
     test_size=0.30,
     random_state=42,
-    scale_numeric_for=None
+    scale_numeric=True
 ):
     
     if thresholds is None:
         thresholds = np.arange(0.20, 0.651, 0.025)
-    
-    if scale_numeric_for is None:
-        scale_numeric_for = [
-            "Logistic Regression",
-            "Logistic Regression Balanced"
-        ]
     
     general_results = []
     threshold_results = []
@@ -506,6 +516,7 @@ def run_model_comparison_mixed(
     interpretation_results = {}
     
     for variable_set_name, model_info in models_dict.items():
+        
         numeric_vars = model_info["numeric_vars"]
         categorical_vars = model_info["categorical_vars"]
         
@@ -524,79 +535,67 @@ def run_model_comparison_mixed(
             stratify=y
         )
         
-        numeric_cols_existing = [
-            col for col in numeric_vars
-            if col in X_train.columns
-        ]
-        
         confusion_results[variable_set_name] = {}
         trained_models[variable_set_name] = {}
         interpretation_results[variable_set_name] = {}
         
         for model_name, model_config in estimators_dict.items():
-            estimator = clone(model_config["estimator"])
-            balance_method = model_config.get("balance_method")
             
-            X_train_model = X_train.copy()
-            X_test_model = X_test.copy()
-            scaler = None
+            pipeline = build_logistic_pipeline(
+                estimator=model_config["estimator"],
+                numeric_vars=numeric_vars,
+                x_columns=X_train.columns,
+                scale_numeric=scale_numeric
+            )
             
-            if model_name in scale_numeric_for and len(numeric_cols_existing) > 0:
-                scaler = StandardScaler()
-                
-                X_train_model[numeric_cols_existing] = scaler.fit_transform(
-                    X_train_model[numeric_cols_existing]
-                )
-                
-                X_test_model[numeric_cols_existing] = scaler.transform(
-                    X_test_model[numeric_cols_existing]
-                )
+            pipeline.fit(X_train, y_train)
             
-            if balance_method == "sample_weight":
-                sample_weight = compute_sample_weight(
-                    class_weight="balanced",
-                    y=y_train
-                )
-                
-                estimator.fit(
-                    X_train_model,
-                    y_train,
-                    sample_weight=sample_weight
-                )
-            
-            else:
-                estimator.fit(X_train_model, y_train)
-            
-            y_prob = estimator.predict_proba(X_test_model)[:, 1]
+            y_prob = pipeline.predict_proba(X_test)[:, 1]
             y_pred_50 = (y_prob >= 0.50).astype(int)
-            auc = roc_auc_score(y_test, y_prob)
+            
+            metrics_50 = calculate_classification_metrics(
+                y_true=y_test,
+                y_pred=y_pred_50,
+                y_prob=y_prob
+            )
             
             general_results.append({
                 "Variable_Set": variable_set_name,
                 "Model": model_name,
                 "Threshold": 0.50,
-                "Accuracy": round(accuracy_score(y_test, y_pred_50), 3),
-                "Precision": round(precision_score(y_test, y_pred_50, zero_division=0), 3),
-                "Recall": round(recall_score(y_test, y_pred_50, zero_division=0), 3),
-                "F1-score": round(f1_score(y_test, y_pred_50, zero_division=0), 3),
-                "AUC": round(auc, 3),
+                
+                "Accuracy": round(metrics_50["Accuracy"], 3),
+                "Precision": round(metrics_50["Precision"], 3),
+                "Recall": round(metrics_50["Recall"], 3),
+                "F1-score": round(metrics_50["F1-score"], 3),
+                "AUC": round(metrics_50["AUC"], 3),
+                
                 "N_Numeric_Variables": len(numeric_vars),
                 "N_Categorical_Variables": len(categorical_vars),
                 "N_Features_After_Dummies": X.shape[1]
             })
             
             for threshold in thresholds:
+                
+                threshold = round(threshold, 3)
                 y_pred_threshold = (y_prob >= threshold).astype(int)
+                
+                metrics_threshold = calculate_classification_metrics(
+                    y_true=y_test,
+                    y_pred=y_pred_threshold,
+                    y_prob=y_prob
+                )
                 
                 threshold_results.append({
                     "Variable_Set": variable_set_name,
                     "Model": model_name,
                     "Threshold": threshold,
-                    "Accuracy": round(accuracy_score(y_test, y_pred_threshold), 3),
-                    "Precision": round(precision_score(y_test, y_pred_threshold, zero_division=0), 3),
-                    "Recall": round(recall_score(y_test, y_pred_threshold, zero_division=0), 3),
-                    "F1-score": round(f1_score(y_test, y_pred_threshold, zero_division=0), 3),
-                    "AUC": round(auc, 3)
+                    
+                    "Accuracy": round(metrics_threshold["Accuracy"], 3),
+                    "Precision": round(metrics_threshold["Precision"], 3),
+                    "Recall": round(metrics_threshold["Recall"], 3),
+                    "F1-score": round(metrics_threshold["F1-score"], 3),
+                    "AUC": round(metrics_threshold["AUC"], 3)
                 })
             
             confusion_results[variable_set_name][model_name] = confusion_matrix(
@@ -605,38 +604,22 @@ def run_model_comparison_mixed(
             )
             
             trained_models[variable_set_name][model_name] = {
-                "X_train": X_train_model,
-                "X_test": X_test_model,
+                "X_train": X_train,
+                "X_test": X_test,
                 "y_train": y_train,
                 "y_test": y_test,
-                "model": estimator,
+                "model": pipeline,
                 "y_prob": y_prob,
-                "scaler": scaler,
                 "numeric_vars": numeric_vars,
                 "categorical_vars": categorical_vars
             }
             
-            if hasattr(estimator, "coef_"):
-                interpretation_results[variable_set_name][model_name] = (
-                    pd.DataFrame({
-                        "Feature": X_train_model.columns,
-                        "Coefficient": estimator.coef_[0],
-                        "Odds_Ratio": np.exp(estimator.coef_[0])
-                    })
-                    .sort_values(by="Odds_Ratio", ascending=False)
+            interpretation_results[variable_set_name][model_name] = (
+                get_logistic_interpretation(
+                    fitted_pipeline=pipeline,
+                    x_columns=X_train.columns
                 )
-            
-            elif hasattr(estimator, "feature_importances_"):
-                interpretation_results[variable_set_name][model_name] = (
-                    pd.DataFrame({
-                        "Feature": X_train_model.columns,
-                        "Importance": estimator.feature_importances_
-                    })
-                    .sort_values(by="Importance", ascending=False)
-                )
-            
-            else:
-                interpretation_results[variable_set_name][model_name] = None
+            )
     
     return (
         pd.DataFrame(general_results),
@@ -647,215 +630,7 @@ def run_model_comparison_mixed(
     )
 
 
-estimators_dict = {
-    
-    "Logistic Regression": {
-        "estimator": LogisticRegression(
-            max_iter=10000,
-            solver="liblinear"
-        )
-    },
-    
-    "Logistic Regression Balanced": {
-        "estimator": LogisticRegression(
-            max_iter=10000,
-            solver="liblinear",
-            class_weight="balanced"
-        )
-    },
-    
-    "Decision Tree": {
-        "estimator": DecisionTreeClassifier(
-            max_depth=5,
-            min_samples_leaf=10,
-            min_samples_split=20,
-            random_state=42
-        )
-    },
-    
-    "Decision Tree Balanced": {
-        "estimator": DecisionTreeClassifier(
-            max_depth=5,
-            min_samples_leaf=10,
-            min_samples_split=20,
-            class_weight="balanced",
-            random_state=42
-        )
-    },
-    
-    "Random Forest": {
-        "estimator": RandomForestClassifier(
-            n_estimators=500,
-            max_depth=8,
-            min_samples_leaf=5,
-            min_samples_split=20,
-            max_features="sqrt",
-            random_state=42,
-            n_jobs=-1
-        )
-    },
-    
-    "Random Forest Balanced": {
-        "estimator": RandomForestClassifier(
-            n_estimators=500,
-            max_depth=8,
-            min_samples_leaf=5,
-            min_samples_split=20,
-            max_features="sqrt",
-            class_weight="balanced",
-            random_state=42,
-            n_jobs=-1
-        )
-    },
-    
-    "Gradient Boosting": {
-        "estimator": GradientBoostingClassifier(
-            n_estimators=200,
-            learning_rate=0.05,
-            max_depth=3,
-            min_samples_leaf=5,
-            subsample=0.8,
-            random_state=42
-        )
-    },
-    
-    "Gradient Boosting Balanced": {
-        "estimator": GradientBoostingClassifier(
-            n_estimators=200,
-            learning_rate=0.05,
-            max_depth=3,
-            min_samples_leaf=5,
-            subsample=0.8,
-            random_state=42
-        ),
-        "balance_method": "sample_weight"
-    },
-    
-    "XGBoost": {
-        "estimator": XGBClassifier(
-            n_estimators=300,
-            learning_rate=0.05,
-            max_depth=3,
-            min_child_weight=3,
-            subsample=0.80,
-            colsample_bytree=0.80,
-            reg_alpha=0.1,
-            reg_lambda=1.0,
-            objective="binary:logistic",
-            eval_metric="logloss",
-            random_state=42,
-            n_jobs=-1
-        )
-    },
-    
-    "XGBoost Balanced": {
-        "estimator": XGBClassifier(
-            n_estimators=300,
-            learning_rate=0.05,
-            max_depth=3,
-            min_child_weight=3,
-            subsample=0.80,
-            colsample_bytree=0.80,
-            reg_alpha=0.1,
-            reg_lambda=1.0,
-            objective="binary:logistic",
-            eval_metric="logloss",
-            random_state=42,
-            n_jobs=-1
-        ),
-        "balance_method": "sample_weight"
-    }
-}
-
-
-param_distributions_dict = {
-
-    "Logistic Regression": {
-        "classifier__C": [0.01, 0.1, 1, 10, 100],
-        "classifier__penalty": ["l1", "l2"],
-        "classifier__solver": ["liblinear"]
-    },
-
-    "Logistic Regression Balanced": {
-        "classifier__C": [0.01, 0.1, 1, 10, 100],
-        "classifier__penalty": ["l1", "l2"],
-        "classifier__solver": ["liblinear"]
-    },
-
-    "Decision Tree": {
-        "classifier__max_depth": [3, 4, 5, 6, 8, 10, None],
-        "classifier__min_samples_leaf": [2, 5, 10, 15, 20],
-        "classifier__min_samples_split": [2, 5, 10, 20, 30],
-        "classifier__criterion": ["gini", "entropy"]
-    },
-
-    "Decision Tree Balanced": {
-        "classifier__max_depth": [3, 4, 5, 6, 8, 10, None],
-        "classifier__min_samples_leaf": [2, 5, 10, 15, 20],
-        "classifier__min_samples_split": [2, 5, 10, 20, 30],
-        "classifier__criterion": ["gini", "entropy"],
-        "classifier__class_weight": ["balanced"]
-    },
-
-    "Random Forest": {
-        "classifier__n_estimators": [100, 200, 300, 500],
-        "classifier__max_depth": [4, 6, 8, 10, 12, None],
-        "classifier__min_samples_leaf": [2, 5, 10, 15],
-        "classifier__min_samples_split": [2, 5, 10, 20],
-        "classifier__max_features": ["sqrt", "log2"]
-    },
-
-    "Random Forest Balanced": {
-        "classifier__n_estimators": [100, 200, 300, 500],
-        "classifier__max_depth": [4, 6, 8, 10, 12, None],
-        "classifier__min_samples_leaf": [2, 5, 10, 15],
-        "classifier__min_samples_split": [2, 5, 10, 20],
-        "classifier__max_features": ["sqrt", "log2"],
-        "classifier__class_weight": ["balanced"]
-    },
-
-    "Gradient Boosting": {
-        "classifier__n_estimators": [100, 200, 300],
-        "classifier__learning_rate": [0.01, 0.03, 0.05, 0.1],
-        "classifier__max_depth": [2, 3, 4, 5],
-        "classifier__min_samples_leaf": [2, 5, 10, 15],
-        "classifier__subsample": [0.7, 0.8, 0.9, 1.0]
-    },
-
-    "Gradient Boosting Balanced": {
-        "classifier__n_estimators": [100, 200, 300],
-        "classifier__learning_rate": [0.01, 0.03, 0.05, 0.1],
-        "classifier__max_depth": [2, 3, 4, 5],
-        "classifier__min_samples_leaf": [2, 5, 10, 15],
-        "classifier__subsample": [0.7, 0.8, 0.9, 1.0]
-    },
-
-    "XGBoost": {
-        "classifier__n_estimators": [100, 200, 300, 500],
-        "classifier__learning_rate": [0.01, 0.03, 0.05, 0.1],
-        "classifier__max_depth": [2, 3, 4, 5, 6],
-        "classifier__min_child_weight": [1, 3, 5, 7],
-        "classifier__subsample": [0.7, 0.8, 0.9, 1.0],
-        "classifier__colsample_bytree": [0.7, 0.8, 0.9, 1.0],
-        "classifier__reg_alpha": [0, 0.01, 0.1, 1],
-        "classifier__reg_lambda": [0.1, 1, 5, 10]
-    },
-
-    "XGBoost Balanced": {
-        "classifier__n_estimators": [100, 200, 300, 500],
-        "classifier__learning_rate": [0.01, 0.03, 0.05, 0.1],
-        "classifier__max_depth": [2, 3, 4, 5, 6],
-        "classifier__min_child_weight": [1, 3, 5, 7],
-        "classifier__subsample": [0.7, 0.8, 0.9, 1.0],
-        "classifier__colsample_bytree": [0.7, 0.8, 0.9, 1.0],
-        "classifier__reg_alpha": [0, 0.01, 0.1, 1],
-        "classifier__reg_lambda": [0.1, 1, 5, 10],
-        "classifier__scale_pos_weight": [1, 2, 3, 4, 5, 6]
-    }
-}
-
-
-def tune_hyperparameters_top_combinations(
+def tune_logistic_hyperparameters_top_combinations(
     df,
     models_dict,
     estimators_dict,
@@ -866,60 +641,55 @@ def tune_hyperparameters_top_combinations(
     n_splits=10,
     scoring="f1",
     random_state=42,
-    scale_numeric_for=None
+    scale_numeric=True
 ):
-
-    if scale_numeric_for is None:
-        scale_numeric_for = [
-            "Logistic Regression",
-            "Logistic Regression Balanced"
-        ]
-
+    
     cv = StratifiedKFold(
         n_splits=n_splits,
         shuffle=True,
         random_state=random_state
     )
-
+    
     tuning_results = []
     best_models = {}
-
+    
     for combination in top_combinations:
+        
         variable_set_name = combination["Variable_Set"]
         model_name = combination["Model"]
-
+        
         if model_name not in param_distributions_dict:
             print(f"No parameter grid found for {model_name}. Skipping.")
             continue
-
+        
         model_info = models_dict[variable_set_name]
         model_config = estimators_dict[model_name]
-
+        
         numeric_vars = model_info["numeric_vars"]
         categorical_vars = model_info["categorical_vars"]
-
+        
         X, y = prepare_model_data(
             df=df,
             numeric_vars=numeric_vars,
             categorical_vars=categorical_vars,
             target=target
         )
-
-        estimator = model_config["estimator"]
-        balance_method = model_config.get("balance_method")
-
-        pipeline = build_model_pipeline(
-            estimator=estimator,
-            model_name=model_name,
+        
+        pipeline = build_logistic_pipeline(
+            estimator=model_config["estimator"],
             numeric_vars=numeric_vars,
             x_columns=X.columns,
-            scale_numeric_for=scale_numeric_for
+            scale_numeric=scale_numeric
         )
-
+        
+        param_grid = param_distributions_dict[model_name]
+        n_possible_combinations = len(list(ParameterGrid(param_grid)))
+        effective_n_iter = min(n_iter, n_possible_combinations)
+        
         random_search = RandomizedSearchCV(
             estimator=pipeline,
-            param_distributions=param_distributions_dict[model_name],
-            n_iter=n_iter,
+            param_distributions=param_grid,
+            n_iter=effective_n_iter,
             scoring=scoring,
             cv=cv,
             random_state=random_state,
@@ -927,49 +697,37 @@ def tune_hyperparameters_top_combinations(
             return_train_score=True,
             refit=True
         )
-
-        if balance_method == "sample_weight":
-            sample_weight = compute_sample_weight(
-                class_weight="balanced",
-                y=y
-            )
-
-            random_search.fit(
-                X,
-                y,
-                classifier__sample_weight=sample_weight
-            )
-
-        else:
-            random_search.fit(X, y)
-
+        
+        random_search.fit(X, y)
+        
         tuning_results.append({
             "Variable_Set": variable_set_name,
             "Model": model_name,
             "Best_Score": round(random_search.best_score_, 3),
             "Scoring": scoring,
             "Best_Params": random_search.best_params_,
+            "N_Parameter_Combinations_Tested": effective_n_iter,
             "N_Numeric_Variables": len(numeric_vars),
             "N_Categorical_Variables": len(categorical_vars),
             "N_Features_After_Dummies": X.shape[1]
         })
-
+        
         best_models[(variable_set_name, model_name)] = random_search.best_estimator_
-
+    
     return pd.DataFrame(tuning_results), best_models
 
 
-def evaluate_thresholds_optimized_models_cv(
+def evaluate_thresholds_optimized_logistic_models_cv(
     df,
     models_dict,
     best_models,
-    estimators_dict,
     target="AttritionFlag",
     thresholds=None,
     test_size=0.30,
     random_state=42,
     n_splits=10,
-    df_test=None
+    df_test=None,
+    threshold_metric="F1-score"
 ):
     
     if thresholds is None:
@@ -997,15 +755,14 @@ def evaluate_thresholds_optimized_models_cv(
     final_test_results = []
     confusion_results = {}
     fitted_models = {}
+    interpretation_results = {}
     
     for (variable_set_name, model_name), best_model in best_models.items():
         
         model_info = models_dict[variable_set_name]
-        model_config = estimators_dict[model_name]
         
         numeric_vars = model_info["numeric_vars"]
         categorical_vars = model_info["categorical_vars"]
-        balance_method = model_config.get("balance_method")
         
         X_train, X_test, y_train, y_test = prepare_train_test_model_data(
             df_train=df_train,
@@ -1024,21 +781,18 @@ def evaluate_thresholds_optimized_models_cv(
             y_fold_train = take_rows(y_train, train_idx)
             
             fold_model = clone(best_model)
+            fold_model.fit(X_fold_train, y_fold_train)
             
-            fold_model = fit_model_with_optional_weights(
-                model=fold_model,
-                X=X_fold_train,
-                y=y_fold_train,
-                balance_method=balance_method
+            y_train_prob_cv[valid_idx] = (
+                fold_model.predict_proba(X_fold_valid)[:, 1]
             )
-            
-            y_train_prob_cv[valid_idx] = fold_model.predict_proba(X_fold_valid)[:, 1]
         
         auc_cv = roc_auc_score(y_train, y_train_prob_cv)
         
         model_threshold_results = []
         
         for threshold in thresholds:
+            
             threshold = round(threshold, 3)
             y_train_pred_cv = (y_train_prob_cv >= threshold).astype(int)
             
@@ -1047,9 +801,21 @@ def evaluate_thresholds_optimized_models_cv(
                 "Model": model_name,
                 "Threshold": threshold,
                 "Accuracy": accuracy_score(y_train, y_train_pred_cv),
-                "Precision": precision_score(y_train, y_train_pred_cv, zero_division=0),
-                "Recall": recall_score(y_train, y_train_pred_cv, zero_division=0),
-                "F1-score": f1_score(y_train, y_train_pred_cv, zero_division=0),
+                "Precision": precision_score(
+                    y_train,
+                    y_train_pred_cv,
+                    zero_division=0
+                ),
+                "Recall": recall_score(
+                    y_train,
+                    y_train_pred_cv,
+                    zero_division=0
+                ),
+                "F1-score": f1_score(
+                    y_train,
+                    y_train_pred_cv,
+                    zero_division=0
+                ),
                 "AUC": auc_cv
             }
             
@@ -1058,9 +824,14 @@ def evaluate_thresholds_optimized_models_cv(
         
         model_threshold_df = pd.DataFrame(model_threshold_results)
         
+        if threshold_metric not in model_threshold_df.columns:
+            raise ValueError(
+                f"threshold_metric must be one of: {list(model_threshold_df.columns)}"
+            )
+        
         best_threshold_row = (
             model_threshold_df
-            .sort_values("F1-score", ascending=False)
+            .sort_values(threshold_metric, ascending=False)
             .iloc[0]
         )
         
@@ -1068,26 +839,27 @@ def evaluate_thresholds_optimized_models_cv(
         best_threshold_rows.append(best_threshold_row.to_dict())
         
         final_model = clone(best_model)
-        
-        final_model = fit_model_with_optional_weights(
-            model=final_model,
-            X=X_train,
-            y=y_train,
-            balance_method=balance_method
-        )
+        final_model.fit(X_train, y_train)
         
         y_test_prob = final_model.predict_proba(X_test)[:, 1]
         y_test_pred = (y_test_prob >= best_threshold).astype(int)
+        
+        final_metrics = calculate_classification_metrics(
+            y_true=y_test,
+            y_pred=y_test_pred,
+            y_prob=y_test_prob
+        )
         
         final_test_results.append({
             "Variable_Set": variable_set_name,
             "Model": model_name,
             "Threshold": best_threshold,
-            "Accuracy": accuracy_score(y_test, y_test_pred),
-            "Precision": precision_score(y_test, y_test_pred, zero_division=0),
-            "Recall": recall_score(y_test, y_test_pred, zero_division=0),
-            "F1-score": f1_score(y_test, y_test_pred, zero_division=0),
-            "AUC": roc_auc_score(y_test, y_test_prob)
+            
+            "Accuracy": final_metrics["Accuracy"],
+            "Precision": final_metrics["Precision"],
+            "Recall": final_metrics["Recall"],
+            "F1-score": final_metrics["F1-score"],
+            "AUC": final_metrics["AUC"]
         })
         
         confusion_results[(variable_set_name, model_name)] = confusion_matrix(
@@ -1103,20 +875,29 @@ def evaluate_thresholds_optimized_models_cv(
             "y_train": y_train,
             "y_test": y_test,
             "y_test_prob": y_test_prob,
-            "y_test_pred": y_test_pred
+            "y_test_pred": y_test_pred,
+            "numeric_vars": numeric_vars,
+            "categorical_vars": categorical_vars
         }
+        
+        interpretation_results[(variable_set_name, model_name)] = (
+            get_logistic_interpretation(
+                fitted_pipeline=final_model,
+                x_columns=X_train.columns
+            )
+        )
     
     threshold_cv_comparison = pd.DataFrame(threshold_cv_results)
     best_thresholds_cv = pd.DataFrame(best_threshold_rows)
     final_test_results_df = pd.DataFrame(final_test_results)
     
     best_thresholds_cv = best_thresholds_cv.sort_values(
-        "F1-score",
+        threshold_metric,
         ascending=False
     )
     
     final_test_results_df = final_test_results_df.sort_values(
-        "F1-score",
+        threshold_metric,
         ascending=False
     )
     
@@ -1141,5 +922,6 @@ def evaluate_thresholds_optimized_models_cv(
         best_thresholds_cv,
         final_test_results_df,
         confusion_results,
-        fitted_models
+        fitted_models,
+        interpretation_results
     )
