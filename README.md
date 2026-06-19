@@ -1,14 +1,14 @@
 # Employee Attrition Analysis
 
-This project analyzes employee attrition using Python, combining exploratory data analysis, statistical methods, feature selection strategies, machine learning models and model interpretability techniques.
+This project analyzes employee attrition using Python, combining exploratory data analysis, statistical methods, feature selection strategies, Logistic Regression modeling and model interpretability techniques.
 
-The main goal is to identify patterns associated with employee turnover and compare predictive models capable of estimating the probability of attrition.
+The main goal is to identify patterns associated with employee turnover and evaluate Logistic Regression approaches capable of estimating the probability of attrition.
 
 ## Project Overview
 
 Employee attrition is an important organizational issue because it can affect productivity, hiring costs, team stability and long-term workforce planning.
 
-This project follows a structured data science workflow, starting with exploratory and statistical analysis, followed by variable selection, model comparison, cross-validation, hyperparameter tuning, threshold optimization and model interpretation.
+This project follows a structured data science workflow, starting with exploratory and statistical analysis, followed by variable selection, Logistic Regression model comparison, cross-validation, hyperparameter tuning, threshold optimization and model interpretation.
 
 The project is still under development. The final model refinement, final interpretation of the results and business-oriented insights are not yet completed.
 
@@ -18,11 +18,11 @@ The project is still under development. The final model refinement, final interp
 * Analyze categorical, quantitative and mixed variable relationships.
 * Reduce redundancy in variable selection using association, correlation and multicollinearity analysis.
 * Build different variable sets for predictive modeling.
-* Compare multiple classification algorithms.
+* Compare Logistic Regression approaches using different variable sets.
 * Evaluate model stability using cross-validation.
-* Optimize selected model combinations through hyperparameter tuning.
+* Optimize selected Logistic Regression combinations through hyperparameter tuning.
 * Test different classification thresholds.
-* Interpret model behavior using Odds Ratios, feature importance and SHAP values.
+* Interpret model behavior using Logistic Regression coefficients and Odds Ratios.
 
 ## Data Source
 
@@ -91,9 +91,9 @@ Some variables in the IBM HR Employee Attrition dataset are encoded as numerical
 | RelationshipSatisfaction | 1 = Low, 2 = Medium, 3 = High, 4 = Very High |
 | WorkLifeBalance | 1 = Bad, 2 = Good, 3 = Better, 4 = Best |
 
-These mappings were applied to improve interpretability in the exploratory data analysis, statistical tests, model interpretation, and business insights.
+These mappings were applied to improve interpretability in the exploratory data analysis, statistical tests, model interpretation and business insights.
 
-In addition to these predefined scales, some continuous variables were grouped into categorical ranges, such as age groups, tenure groups, income groups, distance from home groups, and career stage groups.
+In addition to these predefined scales, some continuous variables were grouped into categorical ranges, such as age groups, tenure groups, income groups, distance from home groups and career stage groups.
 
 ## Methodology
 
@@ -125,24 +125,19 @@ Therefore, these analyses were not used only to describe the data, but also to g
 
 Different groups of variables were created and tested to compare how categorical, quantitative and mixed predictors performed in the prediction of employee attrition.
 
-This allowed the project to evaluate whether model performance improved when using specific groups of predictors or broader combinations of variables.
+This allowed the project to evaluate whether Logistic Regression performance improved when using specific groups of predictors or broader combinations of variables.
 
-### 5. Machine Learning Models
+### 5. Logistic Regression Modeling
 
-The project compares several classification models, including:
+The modeling stage focuses exclusively on Logistic Regression because it is an interpretable algorithm and aligns well with the objective of explaining employee attrition risk factors.
 
-* Logistic Regression
-* Balanced Logistic Regression
-* Decision Tree
-* Balanced Decision Tree
-* Random Forest
-* Balanced Random Forest
-* Gradient Boosting
-* Balanced Gradient Boosting
-* XGBoost
-* Balanced XGBoost
+The project compares Logistic Regression configurations such as:
 
-Balanced versions of the models were tested because the target variable is imbalanced.
+* Standard Logistic Regression.
+* Balanced Logistic Regression using class weighting.
+* Logistic Regression models trained with different variable sets.
+
+Balanced Logistic Regression was tested because the target variable is imbalanced. In an attrition analysis context, it is especially important to reduce false negatives, since predicting that an employee has no attrition risk when they actually leave may be more costly than incorrectly flagging an employee as at risk.
 
 ### 6. Model Evaluation
 
@@ -160,11 +155,11 @@ Since attrition is an imbalanced classification problem, metrics such as Recall,
 
 Cross-validation was used to evaluate model stability and reduce dependence on a single train-test split.
 
-This step helped identify which model and variable-set combinations performed more consistently.
+This step helped identify which Logistic Regression and variable-set combinations performed more consistently.
 
 ### 8. Hyperparameter Tuning
 
-The best-performing model combinations were selected for hyperparameter tuning.
+The best-performing Logistic Regression combinations were selected for hyperparameter tuning.
 
 Randomized search was used to test different parameter combinations and improve model performance.
 
@@ -176,13 +171,9 @@ This is especially relevant in attrition prediction because the default threshol
 
 ### 10. Model Interpretability
 
-Model interpretation was performed using different techniques depending on the model type:
+Model interpretation was performed using Logistic Regression coefficients and Odds Ratios.
 
-* Odds Ratios for Logistic Regression models.
-* Feature importance for tree-based models.
-* SHAP values to analyze global and local feature contributions.
-
-These techniques help explain which variables contribute most to attrition prediction and how they influence model outputs.
+These techniques help explain which variables contribute most to attrition prediction and whether each variable increases or decreases the estimated odds of employee attrition.
 
 ## Technologies Used
 
@@ -193,8 +184,6 @@ These techniques help explain which variables contribute most to attrition predi
 * scipy
 * statsmodels
 * scikit-learn
-* xgboost
-* shap
 * Jupyter Notebook
 * uv
 * Ruff
@@ -204,8 +193,10 @@ These techniques help explain which variables contribute most to attrition predi
 ```text
 .
 ├── data/
-│   ├── raw/
-│   └── clean/
+│   ├── clean/
+│   │   └── Employee-Attrition_Clean.csv
+│   └── raw/
+│       └── HR-Employee-Attrition.csv
 ├── notebooks/
 │   ├── eda/
 │   │   ├── 01_data_preparation.ipynb
@@ -214,13 +205,10 @@ These techniques help explain which variables contribute most to attrition predi
 │   │   └── 04_mixed_analysis.ipynb
 │   └── modeling/
 │       ├── 01_log_regression.ipynb
-│       ├── 02_decision_tree.ipynb
-│       ├── 03_random_forest.ipynb
-│       ├── 04_gradient_boosting.ipynb
-│       ├── 05_xgboost.ipynb
-│       └── 06_model_comparison.ipynb
+│       └── 02_models_comparison.ipynb
 ├── src/
 │   └── attrition_analysis/
+│       ├── __init__.py
 │       ├── associations_test.py
 │       ├── data_selection.py
 │       ├── logistic_models_utils.py
@@ -251,18 +239,6 @@ uv sync
 
 Run the notebooks using VS Code or Jupyter Notebook.
 
-To check code quality with Ruff:
-
-```bash
-uvx ruff check src
-```
-
-To check formatting without applying changes:
-
-```bash
-uvx ruff format --check src
-```
-
 ## Current Status
 
 Completed stages:
@@ -273,25 +249,25 @@ Completed stages:
 * Correlation analysis
 * Multicollinearity analysis
 * Variable set construction
-* Model comparison
+* Logistic Regression model comparison
 * Cross-validation
 * Hyperparameter tuning
 * Threshold optimization
-* Model interpretation using Odds Ratios, feature importance and SHAP values
+* Model interpretation using coefficients and Odds Ratios
 
 In progress:
 
 * Final model refinement
-* Final selection of the best predictive approach
+* Final selection of the best Logistic Regression approach
 * Consolidated interpretation of results
 * Business-oriented insight summary
 * Final conclusions and recommendations
 
 ## Next Steps
 
-The next steps of the project include refining the final model selection, consolidating the main predictive findings and translating the results into business-oriented insights.
+The next steps of the project include refining the final Logistic Regression model selection, consolidating the main predictive findings and translating the results into business-oriented insights.
 
-The final analysis should explain not only which model performs best, but also which factors appear to be most relevant for employee attrition and how these findings can support decision-making.
+The final analysis should explain not only which Logistic Regression configuration performs best, but also which factors appear to be most relevant for employee attrition and how these findings can support decision-making.
 
 ## Author
 
