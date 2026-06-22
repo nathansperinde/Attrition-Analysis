@@ -27,7 +27,6 @@ env/
 .env.*
 
 # Generated outputs
-outputs/
 *.pkl
 *.joblib
 

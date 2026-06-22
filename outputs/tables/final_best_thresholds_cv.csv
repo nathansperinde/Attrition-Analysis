@@ -1,0 +1,21 @@
+Variable_Set,Model,Threshold,Accuracy,Precision,Recall,F1-score,AUC
+Modelo 8 — Integrado Multidimensional,Logistic Regression,0.38,0.874,0.615,0.578,0.596,0.853
+Modelo 8 — Integrado Multidimensional,Logistic Regression Balanced,0.64,0.846,0.518,0.681,0.589,0.842
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression,0.33,0.848,0.53,0.524,0.527,0.812
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression Balanced,0.71,0.848,0.532,0.506,0.519,0.807
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression Balanced,0.59,0.801,0.424,0.651,0.513,0.79
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression,0.23,0.807,0.43,0.608,0.504,0.798
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression Balanced,0.74,0.856,0.568,0.452,0.503,0.791
+Modelo 4 — Trajetória Organizacional,Logistic Regression Balanced,0.57,0.791,0.408,0.651,0.501,0.792
+Modelo 4 — Trajetória Organizacional,Logistic Regression,0.26,0.824,0.462,0.542,0.499,0.795
+Modelo 6 — Perfil Pessoal,Logistic Regression Balanced,0.56,0.78,0.394,0.675,0.498,0.786
+Modelo 4 — Experiência Profissional,Logistic Regression Balanced,0.61,0.801,0.419,0.608,0.496,0.785
+Modelo 1 — Função Profissional Misto,Logistic Regression Balanced,0.65,0.816,0.445,0.56,0.496,0.795
+Modelo 1 — Função Profissional Misto,Logistic Regression,0.31,0.828,0.47,0.524,0.496,0.802
+Modelo 1 — Função Profissional,Logistic Regression Balanced,0.61,0.8,0.417,0.602,0.493,0.786
+Modelo 5 — Antiguidade Organizacional,Logistic Regression Balanced,0.6,0.79,0.401,0.608,0.483,0.778
+Modelo 3 — Rendimento Quantitativo,Logistic Regression Balanced,0.65,0.815,0.439,0.524,0.478,0.77
+Modelo 2 — Nível Hierárquico,Logistic Regression Balanced,0.62,0.795,0.404,0.572,0.474,0.772
+Modelo 3 — Faixa Salarial,Logistic Regression Balanced,0.58,0.785,0.391,0.596,0.473,0.773
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression Balanced,0.5,0.697,0.307,0.699,0.426,0.74
+Modelo 7 — Reduzido Conservador,Logistic Regression Balanced,0.51,0.698,0.304,0.675,0.419,0.714

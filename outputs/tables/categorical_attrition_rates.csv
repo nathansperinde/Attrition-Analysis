@@ -1,0 +1,96 @@
+variable,category,total_employees,attrition_count,attrition_rate
+BusinessTravel,Travel_Frequently,277,69,24.91
+BusinessTravel,Travel_Rarely,1043,156,14.96
+BusinessTravel,Non-Travel,150,12,8.0
+Department,Sales,446,92,20.63
+Department,Human Resources,63,12,19.05
+Department,Research & Development,961,133,13.84
+EducationField,Human Resources,27,7,25.93
+EducationField,Technical Degree,132,32,24.24
+EducationField,Marketing,159,35,22.01
+EducationField,Life Sciences,606,89,14.69
+EducationField,Medical,464,63,13.58
+EducationField,Other,82,11,13.41
+Gender,Male,882,150,17.01
+Gender,Female,588,87,14.8
+JobRole,Sales Representative,83,33,39.76
+JobRole,Laboratory Technician,259,62,23.94
+JobRole,Human Resources,52,12,23.08
+JobRole,Sales Executive,326,57,17.48
+JobRole,Research Scientist,292,47,16.1
+JobRole,Manufacturing Director,145,10,6.9
+JobRole,Healthcare Representative,131,9,6.87
+JobRole,Manager,102,5,4.9
+JobRole,Research Director,80,2,2.5
+MaritalStatus,Single,470,120,25.53
+MaritalStatus,Married,673,84,12.48
+MaritalStatus,Divorced,327,33,10.09
+OverTime,Yes,416,127,30.53
+OverTime,No,1054,110,10.44
+AgeGroup,18-25,123,44,35.77
+AgeGroup,26-35,606,116,19.14
+AgeGroup,56-65,47,8,17.02
+AgeGroup,46-55,226,26,11.5
+AgeGroup,36-45,468,43,9.19
+TenureGroup,0-1,215,75,34.88
+TenureGroup,2-3,255,47,18.43
+TenureGroup,4-5,306,40,13.07
+TenureGroup,6-10,448,55,12.28
+TenureGroup,10+,246,20,8.13
+DistanceGroup,21-30,204,45,22.06
+DistanceGroup,11-20,240,48,20.0
+DistanceGroup,6-10,394,57,14.47
+DistanceGroup,0-5,632,87,13.77
+CareerStage,Entry-level,123,54,43.9
+CareerStage,Early career,193,37,19.17
+CareerStage,Mid career,607,91,14.99
+CareerStage,Experienced,340,39,11.47
+CareerStage,Late career,207,16,7.73
+RoleStabilityGroup,0-1,301,84,27.91
+RoleStabilityGroup,2-3,507,84,16.57
+RoleStabilityGroup,4-7,399,49,12.28
+RoleStabilityGroup,8+,263,20,7.6
+PromotionDelayGroup,Promoted this year,581,110,18.93
+PromotionDelayGroup,5+ years,215,35,16.28
+PromotionDelayGroup,1-2 years,516,76,14.73
+PromotionDelayGroup,3-5 years,158,16,10.13
+IncomeGroup,Low,395,113,28.61
+IncomeGroup,Medium,519,66,12.72
+IncomeGroup,High,275,33,12.0
+IncomeGroup,Very High,281,25,8.9
+EducationLevel,Below College,170,31,18.24
+EducationLevel,Bachelor,572,99,17.31
+EducationLevel,College,282,44,15.6
+EducationLevel,Master,398,58,14.57
+EducationLevel,Doctor,48,5,10.42
+StockOption,No Options,631,154,24.41
+StockOption,High,85,15,17.65
+StockOption,Low,596,56,9.4
+StockOption,Medium,158,12,7.59
+JobLevelGroup,Entry Level,543,143,26.34
+JobLevelGroup,Mid Level,218,32,14.68
+JobLevelGroup,Junior Level,534,52,9.74
+JobLevelGroup,Executive Level,69,5,7.25
+JobLevelGroup,Senior Level,106,5,4.72
+SatisfactionLevel,Low,289,66,22.84
+SatisfactionLevel,High,442,73,16.52
+SatisfactionLevel,Medium,280,46,16.43
+SatisfactionLevel,Very High,459,52,11.33
+PerformanceRatingLevel,Outstanding,226,37,16.37
+PerformanceRatingLevel,Excellent,1244,200,16.08
+EnvironmentSatisfactionLevel,Low,284,72,25.35
+EnvironmentSatisfactionLevel,Medium,287,43,14.98
+EnvironmentSatisfactionLevel,High,453,62,13.69
+EnvironmentSatisfactionLevel,Very High,446,60,13.45
+JobInvolvementLevel,Low,83,28,33.73
+JobInvolvementLevel,Medium,375,71,18.93
+JobInvolvementLevel,High,868,125,14.4
+JobInvolvementLevel,Very High,144,13,9.03
+RelationshipSatisfactionLevel,Low,276,57,20.65
+RelationshipSatisfactionLevel,High,459,71,15.47
+RelationshipSatisfactionLevel,Medium,303,45,14.85
+RelationshipSatisfactionLevel,Very High,432,64,14.81
+WorkLifeBalanceLevel,Bad,80,25,31.25
+WorkLifeBalanceLevel,Best,153,27,17.65
+WorkLifeBalanceLevel,Good,344,58,16.86
+WorkLifeBalanceLevel,Better,893,127,14.22

@@ -1,0 +1,31 @@
+Variable_Set,Model,Train_F1_Mean,CV_F1_Mean,F1_Gap,Train_Recall_Mean,CV_Recall_Mean,Recall_Gap,Train_AUC_Mean,CV_AUC_Mean,AUC_Gap,Gap_Diagnosis,N_Numeric_Variables,N_Categorical_Variables,N_Features_After_Dummies
+Modelo 8 — Integrado Multidimensional,Logistic Regression Balanced,0.571,0.531,0.041,0.823,0.758,0.065,0.893,0.847,0.046,Stable generalization,7,11,43
+Modelo 8 — Integrado Multidimensional,Logistic Regression,0.606,0.526,0.08,0.483,0.422,0.062,0.89,0.856,0.033,Moderate gap,7,11,43
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression Balanced,0.515,0.478,0.037,0.78,0.716,0.064,0.84,0.813,0.027,Stable generalization,3,8,25
+Modelo 4 — Trajetória Organizacional,Logistic Regression Balanced,0.507,0.477,0.03,0.762,0.721,0.041,0.827,0.796,0.031,Stable generalization,0,8,22
+Modelo 5 — Antiguidade Organizacional,Logistic Regression Balanced,0.48,0.464,0.016,0.76,0.733,0.027,0.811,0.783,0.028,Stable generalization,5,6,20
+Modelo 6 — Perfil Pessoal,Logistic Regression Balanced,0.504,0.464,0.04,0.757,0.704,0.053,0.825,0.79,0.035,Stable generalization,0,9,24
+Modelo 4 — Experiência Profissional,Logistic Regression Balanced,0.492,0.459,0.034,0.765,0.721,0.044,0.814,0.791,0.023,Stable generalization,4,6,19
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression Balanced,0.508,0.459,0.049,0.762,0.692,0.07,0.832,0.795,0.037,Stable generalization,0,9,24
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression Balanced,0.5,0.458,0.041,0.756,0.703,0.053,0.828,0.791,0.037,Stable generalization,3,8,24
+Modelo 1 — Função Profissional,Logistic Regression Balanced,0.482,0.455,0.027,0.74,0.697,0.043,0.831,0.789,0.042,Stable generalization,0,8,26
+Modelo 1 — Função Profissional Misto,Logistic Regression Balanced,0.495,0.454,0.041,0.758,0.697,0.061,0.836,0.798,0.038,Stable generalization,3,7,26
+Modelo 2 — Nível Hierárquico,Logistic Regression Balanced,0.468,0.448,0.02,0.722,0.692,0.031,0.808,0.779,0.029,Stable generalization,0,8,22
+Modelo 3 — Rendimento Quantitativo,Logistic Regression Balanced,0.471,0.444,0.027,0.751,0.703,0.048,0.801,0.779,0.022,Stable generalization,4,6,19
+Modelo 3 — Faixa Salarial,Logistic Regression Balanced,0.475,0.44,0.035,0.731,0.679,0.052,0.807,0.777,0.03,Stable generalization,0,8,21
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression Balanced,0.438,0.425,0.013,0.718,0.696,0.021,0.772,0.748,0.024,Stable generalization,3,6,18
+Modelo 7 — Reduzido Conservador,Logistic Regression Balanced,0.435,0.412,0.023,0.717,0.672,0.044,0.769,0.741,0.028,Stable generalization,0,7,18
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression,0.42,0.388,0.032,0.292,0.271,0.021,0.839,0.816,0.022,Stable generalization,3,8,25
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression,0.447,0.387,0.06,0.322,0.271,0.051,0.83,0.799,0.031,Moderate gap,0,9,24
+Modelo 4 — Trajetória Organizacional,Logistic Regression,0.424,0.387,0.037,0.298,0.271,0.027,0.824,0.796,0.028,Stable generalization,0,8,22
+Modelo 1 — Função Profissional Misto,Logistic Regression,0.398,0.378,0.019,0.27,0.266,0.004,0.832,0.801,0.031,Possible underfitting,3,7,26
+Modelo 1 — Função Profissional,Logistic Regression,0.377,0.331,0.046,0.252,0.223,0.029,0.828,0.793,0.034,Possible underfitting,0,8,26
+Modelo 4 — Experiência Profissional,Logistic Regression,0.376,0.331,0.045,0.252,0.222,0.03,0.812,0.792,0.021,Possible underfitting,4,6,19
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression,0.378,0.329,0.049,0.259,0.223,0.036,0.825,0.799,0.026,Possible underfitting,3,8,24
+Modelo 3 — Faixa Salarial,Logistic Regression,0.352,0.316,0.036,0.234,0.211,0.023,0.804,0.778,0.026,Possible underfitting,0,8,21
+Modelo 2 — Nível Hierárquico,Logistic Regression,0.346,0.314,0.032,0.224,0.205,0.019,0.805,0.78,0.026,Possible underfitting,0,8,22
+Modelo 6 — Perfil Pessoal,Logistic Regression,0.375,0.309,0.065,0.252,0.205,0.047,0.822,0.792,0.03,Possible underfitting,0,9,24
+Modelo 5 — Antiguidade Organizacional,Logistic Regression,0.343,0.302,0.041,0.225,0.2,0.025,0.807,0.783,0.024,Possible underfitting,5,6,20
+Modelo 3 — Rendimento Quantitativo,Logistic Regression,0.334,0.293,0.041,0.214,0.187,0.027,0.798,0.78,0.018,Possible underfitting,4,6,19
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression,0.248,0.206,0.043,0.153,0.127,0.025,0.768,0.744,0.024,Possible underfitting,3,6,18
+Modelo 7 — Reduzido Conservador,Logistic Regression,0.21,0.195,0.014,0.127,0.121,0.006,0.765,0.736,0.028,Possible underfitting,0,7,18

@@ -1,0 +1,21 @@
+Variable_Set,Model,Threshold,Accuracy,Precision,Recall,F1-score,AUC
+Modelo 8 — Integrado Multidimensional,Logistic Regression,0.38,0.864,0.575,0.592,0.583,0.814
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression Balanced,0.71,0.864,0.582,0.549,0.565,0.83
+Modelo 8 — Integrado Multidimensional,Logistic Regression Balanced,0.64,0.837,0.495,0.634,0.556,0.81
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression,0.33,0.853,0.543,0.535,0.539,0.833
+Modelo 3 — Faixa Salarial,Logistic Regression Balanced,0.58,0.81,0.437,0.634,0.517,0.797
+Modelo 2 — Nível Hierárquico,Logistic Regression Balanced,0.62,0.823,0.461,0.577,0.512,0.817
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression Balanced,0.59,0.816,0.447,0.592,0.509,0.802
+Modelo 4 — Experiência Profissional,Logistic Regression Balanced,0.61,0.821,0.456,0.577,0.509,0.796
+Modelo 5 — Antiguidade Organizacional,Logistic Regression Balanced,0.6,0.807,0.43,0.606,0.503,0.781
+Modelo 6 — Perfil Pessoal,Logistic Regression Balanced,0.56,0.794,0.407,0.62,0.492,0.802
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression,0.23,0.791,0.404,0.62,0.489,0.795
+Modelo 3 — Rendimento Quantitativo,Logistic Regression Balanced,0.65,0.819,0.447,0.535,0.487,0.796
+Modelo 1 — Função Profissional,Logistic Regression Balanced,0.61,0.803,0.415,0.549,0.473,0.781
+Modelo 1 — Função Profissional Misto,Logistic Regression,0.31,0.83,0.471,0.465,0.468,0.788
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression Balanced,0.74,0.857,0.587,0.38,0.462,0.795
+Modelo 1 — Função Profissional Misto,Logistic Regression Balanced,0.65,0.819,0.442,0.479,0.459,0.78
+Modelo 4 — Trajetória Organizacional,Logistic Regression,0.26,0.81,0.422,0.493,0.455,0.78
+Modelo 7 — Reduzido Conservador,Logistic Regression Balanced,0.51,0.728,0.331,0.676,0.444,0.756
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression Balanced,0.5,0.735,0.333,0.648,0.44,0.781
+Modelo 4 — Trajetória Organizacional,Logistic Regression Balanced,0.57,0.766,0.349,0.521,0.418,0.771

@@ -1,0 +1,346 @@
+Categorical_Variable,Quantitative_Variable,Eta_Squared,Kruskal_Statistic,p_value,Significativo,Força
+BusinessTravel,Age,0.001,0.674,0.7137,Não,Muito fraca
+BusinessTravel,DailyRate,0.0,0.377,0.8281,Não,Muito fraca
+BusinessTravel,DistanceFromHome,0.001,0.469,0.7909,Não,Muito fraca
+BusinessTravel,HourlyRate,0.001,1.163,0.5591,Não,Muito fraca
+BusinessTravel,MonthlyIncome,0.002,1.264,0.5316,Não,Muito fraca
+BusinessTravel,MonthlyRate,0.0,0.356,0.8371,Não,Muito fraca
+BusinessTravel,NumCompaniesWorked,0.002,2.308,0.3153,Não,Muito fraca
+BusinessTravel,PercentSalaryHike,0.001,3.571,0.1677,Não,Muito fraca
+BusinessTravel,TotalWorkingYears,0.001,1.01,0.6034,Não,Muito fraca
+BusinessTravel,TrainingTimesLastYear,0.0,1.35,0.5092,Não,Muito fraca
+BusinessTravel,YearsAtCompany,0.0,0.729,0.6946,Não,Muito fraca
+BusinessTravel,YearsInCurrentRole,0.0,0.908,0.635,Não,Muito fraca
+BusinessTravel,YearsSinceLastPromotion,0.001,2.199,0.3331,Não,Muito fraca
+BusinessTravel,YearsWithCurrManager,0.001,0.87,0.6471,Não,Muito fraca
+BusinessTravel,AttritionFlag,0.016,24.166,0.0,Sim,Fraca
+Department,Age,0.001,1.586,0.4524,Não,Muito fraca
+Department,DailyRate,0.001,1.146,0.5638,Não,Muito fraca
+Department,DistanceFromHome,0.0,1.394,0.4981,Não,Muito fraca
+Department,HourlyRate,0.0,0.652,0.7218,Não,Muito fraca
+Department,MonthlyIncome,0.004,42.619,0.0,Sim,Muito fraca
+Department,MonthlyRate,0.001,1.14,0.5655,Não,Muito fraca
+Department,NumCompaniesWorked,0.001,1.551,0.4604,Não,Muito fraca
+Department,PercentSalaryHike,0.001,2.07,0.3552,Não,Muito fraca
+Department,TotalWorkingYears,0.0,0.142,0.9314,Não,Muito fraca
+Department,TrainingTimesLastYear,0.002,3.386,0.184,Não,Muito fraca
+Department,YearsAtCompany,0.001,2.039,0.3607,Não,Muito fraca
+Department,YearsInCurrentRole,0.003,4.684,0.0961,Não,Muito fraca
+Department,YearsSinceLastPromotion,0.002,0.576,0.7496,Não,Muito fraca
+Department,YearsWithCurrManager,0.001,0.899,0.6378,Não,Muito fraca
+Department,AttritionFlag,0.007,10.789,0.0045,Sim,Muito fraca
+EducationField,Age,0.004,6.02,0.3043,Não,Muito fraca
+EducationField,DailyRate,0.007,10.492,0.0624,Não,Muito fraca
+EducationField,DistanceFromHome,0.002,6.593,0.2527,Não,Muito fraca
+EducationField,HourlyRate,0.004,5.869,0.3192,Não,Muito fraca
+EducationField,MonthlyIncome,0.007,24.792,0.0002,Sim,Muito fraca
+EducationField,MonthlyRate,0.002,2.57,0.766,Não,Muito fraca
+EducationField,NumCompaniesWorked,0.002,2.775,0.7347,Não,Muito fraca
+EducationField,PercentSalaryHike,0.004,5.468,0.3615,Não,Muito fraca
+EducationField,TotalWorkingYears,0.003,3.876,0.5673,Não,Muito fraca
+EducationField,TrainingTimesLastYear,0.007,6.699,0.244,Não,Muito fraca
+EducationField,YearsAtCompany,0.002,2.019,0.8465,Não,Muito fraca
+EducationField,YearsInCurrentRole,0.002,2.435,0.7862,Não,Muito fraca
+EducationField,YearsSinceLastPromotion,0.002,5.74,0.3323,Não,Muito fraca
+EducationField,YearsWithCurrManager,0.002,2.154,0.8274,Não,Muito fraca
+EducationField,AttritionFlag,0.011,16.014,0.0068,Sim,Fraca
+Gender,Age,0.001,1.913,0.1666,Não,Muito fraca
+Gender,DailyRate,0.0,0.191,0.6617,Não,Muito fraca
+Gender,DistanceFromHome,0.0,0.028,0.8665,Não,Muito fraca
+Gender,HourlyRate,0.0,0.0,0.9915,Não,Muito fraca
+Gender,MonthlyIncome,0.001,2.903,0.0884,Não,Muito fraca
+Gender,MonthlyRate,0.002,2.573,0.1087,Não,Muito fraca
+Gender,NumCompaniesWorked,0.002,2.475,0.1157,Não,Muito fraca
+Gender,PercentSalaryHike,0.0,0.144,0.7043,Não,Muito fraca
+Gender,TotalWorkingYears,0.002,3.577,0.0586,Não,Muito fraca
+Gender,TrainingTimesLastYear,0.002,1.631,0.2015,Não,Muito fraca
+Gender,YearsAtCompany,0.001,2.613,0.106,Não,Muito fraca
+Gender,YearsInCurrentRole,0.002,1.354,0.2446,Não,Muito fraca
+Gender,YearsSinceLastPromotion,0.001,0.922,0.337,Não,Muito fraca
+Gender,YearsWithCurrManager,0.001,1.044,0.3068,Não,Muito fraca
+Gender,AttritionFlag,0.001,1.274,0.259,Não,Muito fraca
+JobRole,Age,0.188,271.477,0.0,Sim,Forte
+JobRole,DailyRate,0.002,3.193,0.9217,Não,Muito fraca
+JobRole,DistanceFromHome,0.004,8.373,0.3979,Não,Muito fraca
+JobRole,HourlyRate,0.002,3.484,0.9004,Não,Muito fraca
+JobRole,MonthlyIncome,0.816,1073.41,0.0,Sim,Forte
+JobRole,MonthlyRate,0.003,4.728,0.7862,Não,Muito fraca
+JobRole,NumCompaniesWorked,0.024,42.746,0.0,Sim,Fraca
+JobRole,PercentSalaryHike,0.006,10.068,0.2603,Não,Muito fraca
+JobRole,TotalWorkingYears,0.436,556.171,0.0,Sim,Forte
+JobRole,TrainingTimesLastYear,0.008,12.627,0.1253,Não,Muito fraca
+JobRole,YearsAtCompany,0.197,222.985,0.0,Sim,Forte
+JobRole,YearsInCurrentRole,0.11,147.816,0.0,Sim,Moderada
+JobRole,YearsSinceLastPromotion,0.088,78.268,0.0,Sim,Moderada
+JobRole,YearsWithCurrManager,0.105,147.133,0.0,Sim,Moderada
+JobRole,AttritionFlag,0.059,86.132,0.0,Sim,Fraca
+MaritalStatus,Age,0.014,18.863,0.0001,Sim,Fraca
+MaritalStatus,DailyRate,0.006,8.632,0.0134,Sim,Muito fraca
+MaritalStatus,DistanceFromHome,0.001,1.014,0.6024,Não,Muito fraca
+MaritalStatus,HourlyRate,0.002,2.092,0.3513,Não,Muito fraca
+MaritalStatus,MonthlyIncome,0.008,12.247,0.0022,Sim,Muito fraca
+MaritalStatus,MonthlyRate,0.002,2.357,0.3078,Não,Muito fraca
+MaritalStatus,NumCompaniesWorked,0.002,4.632,0.0987,Não,Muito fraca
+MaritalStatus,PercentSalaryHike,0.001,0.882,0.6433,Não,Muito fraca
+MaritalStatus,TotalWorkingYears,0.008,14.945,0.0006,Sim,Muito fraca
+MaritalStatus,TrainingTimesLastYear,0.001,0.853,0.6529,Não,Muito fraca
+MaritalStatus,YearsAtCompany,0.005,10.506,0.0052,Sim,Muito fraca
+MaritalStatus,YearsInCurrentRole,0.008,10.508,0.0052,Sim,Muito fraca
+MaritalStatus,YearsSinceLastPromotion,0.004,7.062,0.0293,Sim,Muito fraca
+MaritalStatus,YearsWithCurrManager,0.002,4.29,0.1171,Não,Muito fraca
+MaritalStatus,AttritionFlag,0.031,46.132,0.0,Sim,Fraca
+OverTime,Age,0.001,1.074,0.3,Não,Muito fraca
+OverTime,DailyRate,0.0,0.103,0.748,Não,Muito fraca
+OverTime,DistanceFromHome,0.001,1.972,0.1602,Não,Muito fraca
+OverTime,HourlyRate,0.0,0.123,0.7261,Não,Muito fraca
+OverTime,MonthlyIncome,0.0,0.117,0.7327,Não,Muito fraca
+OverTime,MonthlyRate,0.0,0.653,0.419,Não,Muito fraca
+OverTime,NumCompaniesWorked,0.0,0.203,0.6524,Não,Muito fraca
+OverTime,PercentSalaryHike,0.0,0.338,0.5608,Não,Muito fraca
+OverTime,TotalWorkingYears,0.0,0.0,0.9921,Não,Muito fraca
+OverTime,TrainingTimesLastYear,0.006,7.356,0.0067,Sim,Muito fraca
+OverTime,YearsAtCompany,0.0,1.939,0.1638,Não,Muito fraca
+OverTime,YearsInCurrentRole,0.001,1.941,0.1635,Não,Muito fraca
+OverTime,YearsSinceLastPromotion,0.0,0.399,0.5276,Não,Muito fraca
+OverTime,YearsWithCurrManager,0.002,2.39,0.1221,Não,Muito fraca
+OverTime,AttritionFlag,0.061,88.983,0.0,Sim,Moderada
+AgeGroup,Age,0.908,1314.041,0.0,Sim,Forte
+AgeGroup,DailyRate,0.001,1.337,0.855,Não,Muito fraca
+AgeGroup,DistanceFromHome,0.001,2.957,0.565,Não,Muito fraca
+AgeGroup,HourlyRate,0.001,1.803,0.7719,Não,Muito fraca
+AgeGroup,MonthlyIncome,0.247,322.125,0.0,Sim,Forte
+AgeGroup,MonthlyRate,0.007,10.991,0.0267,Sim,Muito fraca
+AgeGroup,NumCompaniesWorked,0.096,190.68,0.0,Sim,Moderada
+AgeGroup,PercentSalaryHike,0.0,0.711,0.95,Não,Muito fraca
+AgeGroup,TotalWorkingYears,0.452,621.776,0.0,Sim,Forte
+AgeGroup,TrainingTimesLastYear,0.001,0.563,0.9671,Não,Muito fraca
+AgeGroup,YearsAtCompany,0.098,139.142,0.0,Sim,Moderada
+AgeGroup,YearsInCurrentRole,0.061,90.299,0.0,Sim,Moderada
+AgeGroup,YearsSinceLastPromotion,0.045,38.485,0.0,Sim,Fraca
+AgeGroup,YearsWithCurrManager,0.063,93.426,0.0,Sim,Moderada
+AgeGroup,AttritionFlag,0.04,59.398,0.0,Sim,Fraca
+TenureGroup,Age,0.06,98.458,0.0,Sim,Moderada
+TenureGroup,DailyRate,0.002,2.292,0.6823,Não,Muito fraca
+TenureGroup,DistanceFromHome,0.003,5.765,0.2174,Não,Muito fraca
+TenureGroup,HourlyRate,0.002,3.473,0.482,Não,Muito fraca
+TenureGroup,MonthlyIncome,0.197,311.605,0.0,Sim,Forte
+TenureGroup,MonthlyRate,0.001,1.842,0.7647,Não,Muito fraca
+TenureGroup,NumCompaniesWorked,0.024,41.915,0.0,Sim,Fraca
+TenureGroup,PercentSalaryHike,0.004,6.971,0.1374,Não,Muito fraca
+TenureGroup,TotalWorkingYears,0.309,536.059,0.0,Sim,Forte
+TenureGroup,TrainingTimesLastYear,0.005,6.256,0.1808,Não,Muito fraca
+TenureGroup,YearsAtCompany,0.818,1404.813,0.0,Sim,Forte
+TenureGroup,YearsInCurrentRole,0.702,1069.682,0.0,Sim,Forte
+TenureGroup,YearsSinceLastPromotion,0.368,536.061,0.0,Sim,Forte
+TenureGroup,YearsWithCurrManager,0.69,1028.332,0.0,Sim,Forte
+TenureGroup,AttritionFlag,0.051,75.54,0.0,Sim,Fraca
+DistanceGroup,Age,0.002,1.719,0.6327,Não,Muito fraca
+DistanceGroup,DailyRate,0.004,6.401,0.0936,Não,Muito fraca
+DistanceGroup,DistanceFromHome,0.947,1322.965,0.0,Sim,Forte
+DistanceGroup,HourlyRate,0.002,3.223,0.3586,Não,Muito fraca
+DistanceGroup,MonthlyIncome,0.002,1.563,0.6677,Não,Muito fraca
+DistanceGroup,MonthlyRate,0.004,5.281,0.1523,Não,Muito fraca
+DistanceGroup,NumCompaniesWorked,0.001,0.52,0.9146,Não,Muito fraca
+DistanceGroup,PercentSalaryHike,0.007,8.01,0.0458,Sim,Muito fraca
+DistanceGroup,TotalWorkingYears,0.005,4.961,0.1747,Não,Muito fraca
+DistanceGroup,TrainingTimesLastYear,0.004,8.507,0.0366,Sim,Muito fraca
+DistanceGroup,YearsAtCompany,0.002,1.998,0.5729,Não,Muito fraca
+DistanceGroup,YearsInCurrentRole,0.002,2.897,0.4078,Não,Muito fraca
+DistanceGroup,YearsSinceLastPromotion,0.001,1.883,0.5971,Não,Muito fraca
+DistanceGroup,YearsWithCurrManager,0.002,1.807,0.6133,Não,Muito fraca
+DistanceGroup,AttritionFlag,0.008,11.371,0.0099,Sim,Muito fraca
+CareerStage,Age,0.423,617.779,0.0,Sim,Forte
+CareerStage,DailyRate,0.001,0.934,0.9196,Não,Muito fraca
+CareerStage,DistanceFromHome,0.004,7.297,0.121,Não,Muito fraca
+CareerStage,HourlyRate,0.001,2.021,0.7319,Não,Muito fraca
+CareerStage,MonthlyIncome,0.682,775.383,0.0,Sim,Forte
+CareerStage,MonthlyRate,0.004,5.608,0.2304,Não,Muito fraca
+CareerStage,NumCompaniesWorked,0.081,163.538,0.0,Sim,Moderada
+CareerStage,PercentSalaryHike,0.001,2.389,0.6646,Não,Muito fraca
+CareerStage,TotalWorkingYears,0.898,1345.374,0.0,Sim,Forte
+CareerStage,TrainingTimesLastYear,0.003,1.865,0.7606,Não,Muito fraca
+CareerStage,YearsAtCompany,0.369,511.573,0.0,Sim,Forte
+CareerStage,YearsInCurrentRole,0.251,372.98,0.0,Sim,Forte
+CareerStage,YearsSinceLastPromotion,0.167,164.067,0.0,Sim,Forte
+CareerStage,YearsWithCurrManager,0.243,364.362,0.0,Sim,Forte
+CareerStage,AttritionFlag,0.06,88.256,0.0,Sim,Moderada
+RoleStabilityGroup,Age,0.038,59.818,0.0,Sim,Fraca
+RoleStabilityGroup,DailyRate,0.0,0.072,0.995,Não,Muito fraca
+RoleStabilityGroup,DistanceFromHome,0.001,0.842,0.8393,Não,Muito fraca
+RoleStabilityGroup,HourlyRate,0.002,2.219,0.5283,Não,Muito fraca
+RoleStabilityGroup,MonthlyIncome,0.118,231.584,0.0,Sim,Moderada
+RoleStabilityGroup,MonthlyRate,0.001,0.902,0.825,Não,Muito fraca
+RoleStabilityGroup,NumCompaniesWorked,0.014,27.06,0.0,Sim,Fraca
+RoleStabilityGroup,PercentSalaryHike,0.002,3.573,0.3114,Não,Muito fraca
+RoleStabilityGroup,TotalWorkingYears,0.189,371.479,0.0,Sim,Forte
+RoleStabilityGroup,TrainingTimesLastYear,0.001,0.736,0.8648,Não,Muito fraca
+RoleStabilityGroup,YearsAtCompany,0.515,1011.597,0.0,Sim,Forte
+RoleStabilityGroup,YearsInCurrentRole,0.877,1394.262,0.0,Sim,Forte
+RoleStabilityGroup,YearsSinceLastPromotion,0.272,400.41,0.0,Sim,Forte
+RoleStabilityGroup,YearsWithCurrManager,0.474,719.284,0.0,Sim,Forte
+RoleStabilityGroup,AttritionFlag,0.034,49.417,0.0,Sim,Fraca
+PromotionDelayGroup,Age,0.035,56.339,0.0,Sim,Fraca
+PromotionDelayGroup,DailyRate,0.002,2.55,0.4664,Não,Muito fraca
+PromotionDelayGroup,DistanceFromHome,0.0,0.038,0.998,Não,Muito fraca
+PromotionDelayGroup,HourlyRate,0.002,3.348,0.341,Não,Muito fraca
+PromotionDelayGroup,MonthlyIncome,0.091,137.773,0.0,Sim,Moderada
+PromotionDelayGroup,MonthlyRate,0.0,0.684,0.8771,Não,Muito fraca
+PromotionDelayGroup,NumCompaniesWorked,0.005,11.17,0.0108,Sim,Muito fraca
+PromotionDelayGroup,PercentSalaryHike,0.003,7.696,0.0527,Não,Muito fraca
+PromotionDelayGroup,TotalWorkingYears,0.13,235.335,0.0,Sim,Moderada
+PromotionDelayGroup,TrainingTimesLastYear,0.001,1.168,0.7608,Não,Muito fraca
+PromotionDelayGroup,YearsAtCompany,0.323,529.403,0.0,Sim,Forte
+PromotionDelayGroup,YearsInCurrentRole,0.324,457.233,0.0,Sim,Forte
+PromotionDelayGroup,YearsSinceLastPromotion,0.878,1418.465,0.0,Sim,Forte
+PromotionDelayGroup,YearsWithCurrManager,0.284,392.021,0.0,Sim,Forte
+PromotionDelayGroup,AttritionFlag,0.006,8.333,0.0396,Sim,Muito fraca
+IncomeGroup,Age,0.248,354.911,0.0,Sim,Forte
+IncomeGroup,DailyRate,0.0,0.481,0.923,Não,Muito fraca
+IncomeGroup,DistanceFromHome,0.001,1.802,0.6144,Não,Muito fraca
+IncomeGroup,HourlyRate,0.0,0.326,0.9551,Não,Muito fraca
+IncomeGroup,MonthlyIncome,0.877,1355.971,0.0,Sim,Forte
+IncomeGroup,MonthlyRate,0.003,3.981,0.2636,Não,Muito fraca
+IncomeGroup,NumCompaniesWorked,0.032,59.281,0.0,Sim,Fraca
+IncomeGroup,PercentSalaryHike,0.001,2.185,0.5349,Não,Muito fraca
+IncomeGroup,TotalWorkingYears,0.585,753.936,0.0,Sim,Forte
+IncomeGroup,TrainingTimesLastYear,0.001,2.366,0.5,Não,Muito fraca
+IncomeGroup,YearsAtCompany,0.262,304.92,0.0,Sim,Forte
+IncomeGroup,YearsInCurrentRole,0.162,227.609,0.0,Sim,Forte
+IncomeGroup,YearsSinceLastPromotion,0.127,107.634,0.0,Sim,Moderada
+IncomeGroup,YearsWithCurrManager,0.137,192.173,0.0,Sim,Moderada
+IncomeGroup,AttritionFlag,0.044,64.244,0.0,Sim,Fraca
+EducationLevel,Age,0.054,86.397,0.0,Sim,Fraca
+EducationLevel,DailyRate,0.002,2.832,0.5864,Não,Muito fraca
+EducationLevel,DistanceFromHome,0.001,1.825,0.7679,Não,Muito fraca
+EducationLevel,HourlyRate,0.001,1.236,0.8721,Não,Muito fraca
+EducationLevel,MonthlyIncome,0.011,27.49,0.0,Sim,Fraca
+EducationLevel,MonthlyRate,0.002,3.274,0.5131,Não,Muito fraca
+EducationLevel,NumCompaniesWorked,0.019,34.678,0.0,Sim,Fraca
+EducationLevel,PercentSalaryHike,0.001,1.699,0.7908,Não,Muito fraca
+EducationLevel,TotalWorkingYears,0.023,47.455,0.0,Sim,Fraca
+EducationLevel,TrainingTimesLastYear,0.002,3.304,0.5082,Não,Muito fraca
+EducationLevel,YearsAtCompany,0.006,7.394,0.1165,Não,Muito fraca
+EducationLevel,YearsInCurrentRole,0.004,4.557,0.3359,Não,Muito fraca
+EducationLevel,YearsSinceLastPromotion,0.003,1.74,0.7834,Não,Muito fraca
+EducationLevel,YearsWithCurrManager,0.005,4.804,0.308,Não,Muito fraca
+EducationLevel,AttritionFlag,0.002,3.072,0.5459,Não,Muito fraca
+StockOption,Age,0.012,17.041,0.0007,Sim,Fraca
+StockOption,DailyRate,0.003,4.292,0.2316,Não,Muito fraca
+StockOption,DistanceFromHome,0.008,8.127,0.0435,Sim,Muito fraca
+StockOption,HourlyRate,0.005,6.518,0.089,Não,Muito fraca
+StockOption,MonthlyIncome,0.009,11.484,0.0094,Sim,Muito fraca
+StockOption,MonthlyRate,0.002,3.324,0.3443,Não,Muito fraca
+StockOption,NumCompaniesWorked,0.002,2.301,0.5123,Não,Muito fraca
+StockOption,PercentSalaryHike,0.003,2.991,0.3931,Não,Muito fraca
+StockOption,TotalWorkingYears,0.01,13.697,0.0033,Sim,Muito fraca
+StockOption,TrainingTimesLastYear,0.001,1.181,0.7576,Não,Muito fraca
+StockOption,YearsAtCompany,0.007,12.767,0.0052,Sim,Muito fraca
+StockOption,YearsInCurrentRole,0.006,10.315,0.0161,Sim,Muito fraca
+StockOption,YearsSinceLastPromotion,0.002,3.396,0.3346,Não,Muito fraca
+StockOption,YearsWithCurrManager,0.004,7.472,0.0583,Não,Muito fraca
+StockOption,AttritionFlag,0.041,60.557,0.0,Sim,Fraca
+JobLevelGroup,Age,0.267,388.072,0.0,Sim,Forte
+JobLevelGroup,DailyRate,0.001,1.793,0.7738,Não,Muito fraca
+JobLevelGroup,DistanceFromHome,0.011,12.212,0.0158,Sim,Fraca
+JobLevelGroup,HourlyRate,0.002,2.542,0.6372,Não,Muito fraca
+JobLevelGroup,MonthlyIncome,0.925,1245.176,0.0,Sim,Forte
+JobLevelGroup,MonthlyRate,0.005,7.066,0.1324,Não,Muito fraca
+JobLevelGroup,NumCompaniesWorked,0.023,48.226,0.0,Sim,Fraca
+JobLevelGroup,PercentSalaryHike,0.003,3.91,0.4184,Não,Muito fraca
+JobLevelGroup,TotalWorkingYears,0.635,814.301,0.0,Sim,Forte
+JobLevelGroup,TrainingTimesLastYear,0.003,2.865,0.5806,Não,Muito fraca
+JobLevelGroup,YearsAtCompany,0.29,329.76,0.0,Sim,Forte
+JobLevelGroup,YearsInCurrentRole,0.172,232.069,0.0,Sim,Forte
+JobLevelGroup,YearsSinceLastPromotion,0.133,116.406,0.0,Sim,Moderada
+JobLevelGroup,YearsWithCurrManager,0.155,207.995,0.0,Sim,Forte
+JobLevelGroup,AttritionFlag,0.049,72.48,0.0,Sim,Fraca
+SatisfactionLevel,Age,0.0,0.319,0.9564,Não,Muito fraca
+SatisfactionLevel,DailyRate,0.004,5.329,0.1493,Não,Muito fraca
+SatisfactionLevel,DistanceFromHome,0.0,1.442,0.6957,Não,Muito fraca
+SatisfactionLevel,HourlyRate,0.006,8.324,0.0398,Sim,Muito fraca
+SatisfactionLevel,MonthlyIncome,0.0,0.763,0.8582,Não,Muito fraca
+SatisfactionLevel,MonthlyRate,0.001,1.527,0.6761,Não,Muito fraca
+SatisfactionLevel,NumCompaniesWorked,0.003,3.925,0.2696,Não,Muito fraca
+SatisfactionLevel,PercentSalaryHike,0.002,2.776,0.4275,Não,Muito fraca
+SatisfactionLevel,TotalWorkingYears,0.001,1.609,0.6574,Não,Muito fraca
+SatisfactionLevel,TrainingTimesLastYear,0.001,1.707,0.6353,Não,Muito fraca
+SatisfactionLevel,YearsAtCompany,0.0,0.445,0.9308,Não,Muito fraca
+SatisfactionLevel,YearsInCurrentRole,0.0,0.07,0.9951,Não,Muito fraca
+SatisfactionLevel,YearsSinceLastPromotion,0.0,0.509,0.9168,Não,Muito fraca
+SatisfactionLevel,YearsWithCurrManager,0.001,1.306,0.7276,Não,Muito fraca
+SatisfactionLevel,AttritionFlag,0.012,17.493,0.0006,Sim,Fraca
+PerformanceRatingLevel,Age,0.0,0.0,0.9971,Não,Muito fraca
+PerformanceRatingLevel,DailyRate,0.0,0.001,0.9809,Não,Muito fraca
+PerformanceRatingLevel,DistanceFromHome,0.001,0.188,0.6644,Não,Muito fraca
+PerformanceRatingLevel,HourlyRate,0.0,0.007,0.9333,Não,Muito fraca
+PerformanceRatingLevel,MonthlyIncome,0.0,1.071,0.3008,Não,Muito fraca
+PerformanceRatingLevel,MonthlyRate,0.0,0.138,0.7101,Não,Muito fraca
+PerformanceRatingLevel,NumCompaniesWorked,0.0,0.101,0.7504,Não,Muito fraca
+PerformanceRatingLevel,PercentSalaryHike,0.598,580.308,0.0,Sim,Forte
+PerformanceRatingLevel,TotalWorkingYears,0.0,0.2,0.6544,Não,Muito fraca
+PerformanceRatingLevel,TrainingTimesLastYear,0.0,0.409,0.5227,Não,Muito fraca
+PerformanceRatingLevel,YearsAtCompany,0.0,0.436,0.5091,Não,Muito fraca
+PerformanceRatingLevel,YearsInCurrentRole,0.001,1.573,0.2098,Não,Muito fraca
+PerformanceRatingLevel,YearsSinceLastPromotion,0.0,0.064,0.8009,Não,Muito fraca
+PerformanceRatingLevel,YearsWithCurrManager,0.001,0.96,0.3273,Não,Muito fraca
+PerformanceRatingLevel,AttritionFlag,0.0,0.012,0.9118,Não,Muito fraca
+EnvironmentSatisfactionLevel,Age,0.001,0.714,0.8698,Não,Muito fraca
+EnvironmentSatisfactionLevel,DailyRate,0.0,0.591,0.8985,Não,Muito fraca
+EnvironmentSatisfactionLevel,DistanceFromHome,0.001,1.245,0.7421,Não,Muito fraca
+EnvironmentSatisfactionLevel,HourlyRate,0.003,4.981,0.1732,Não,Muito fraca
+EnvironmentSatisfactionLevel,MonthlyIncome,0.001,0.656,0.8836,Não,Muito fraca
+EnvironmentSatisfactionLevel,MonthlyRate,0.003,3.921,0.2701,Não,Muito fraca
+EnvironmentSatisfactionLevel,NumCompaniesWorked,0.002,4.126,0.2482,Não,Muito fraca
+EnvironmentSatisfactionLevel,PercentSalaryHike,0.002,1.953,0.5823,Não,Muito fraca
+EnvironmentSatisfactionLevel,TotalWorkingYears,0.001,0.694,0.8747,Não,Muito fraca
+EnvironmentSatisfactionLevel,TrainingTimesLastYear,0.001,1.155,0.7637,Não,Muito fraca
+EnvironmentSatisfactionLevel,YearsAtCompany,0.0,2.82,0.4202,Não,Muito fraca
+EnvironmentSatisfactionLevel,YearsInCurrentRole,0.002,2.546,0.467,Não,Muito fraca
+EnvironmentSatisfactionLevel,YearsSinceLastPromotion,0.001,3.042,0.3852,Não,Muito fraca
+EnvironmentSatisfactionLevel,YearsWithCurrManager,0.0,0.365,0.9473,Não,Muito fraca
+EnvironmentSatisfactionLevel,AttritionFlag,0.015,22.489,0.0001,Sim,Fraca
+JobInvolvementLevel,Age,0.002,3.243,0.3557,Não,Muito fraca
+JobInvolvementLevel,DailyRate,0.003,4.253,0.2354,Não,Muito fraca
+JobInvolvementLevel,DistanceFromHome,0.001,2.348,0.5033,Não,Muito fraca
+JobInvolvementLevel,HourlyRate,0.002,3.362,0.3391,Não,Muito fraca
+JobInvolvementLevel,MonthlyIncome,0.001,0.961,0.8107,Não,Muito fraca
+JobInvolvementLevel,MonthlyRate,0.001,1.875,0.5987,Não,Muito fraca
+JobInvolvementLevel,NumCompaniesWorked,0.001,1.353,0.7166,Não,Muito fraca
+JobInvolvementLevel,PercentSalaryHike,0.002,3.887,0.2739,Não,Muito fraca
+JobInvolvementLevel,TotalWorkingYears,0.0,0.417,0.9367,Não,Muito fraca
+JobInvolvementLevel,TrainingTimesLastYear,0.002,2.025,0.5673,Não,Muito fraca
+JobInvolvementLevel,YearsAtCompany,0.001,0.579,0.9012,Não,Muito fraca
+JobInvolvementLevel,YearsInCurrentRole,0.0,0.395,0.9412,Não,Muito fraca
+JobInvolvementLevel,YearsSinceLastPromotion,0.001,1.659,0.6461,Não,Muito fraca
+JobInvolvementLevel,YearsWithCurrManager,0.001,2.879,0.4107,Não,Muito fraca
+JobInvolvementLevel,AttritionFlag,0.019,28.473,0.0,Sim,Fraca
+RelationshipSatisfactionLevel,Age,0.003,3.253,0.3542,Não,Muito fraca
+RelationshipSatisfactionLevel,DailyRate,0.001,1.271,0.7359,Não,Muito fraca
+RelationshipSatisfactionLevel,DistanceFromHome,0.002,1.858,0.6023,Não,Muito fraca
+RelationshipSatisfactionLevel,HourlyRate,0.003,3.722,0.2931,Não,Muito fraca
+RelationshipSatisfactionLevel,MonthlyIncome,0.001,0.177,0.9812,Não,Muito fraca
+RelationshipSatisfactionLevel,MonthlyRate,0.002,3.511,0.3193,Não,Muito fraca
+RelationshipSatisfactionLevel,NumCompaniesWorked,0.005,6.642,0.0842,Não,Muito fraca
+RelationshipSatisfactionLevel,PercentSalaryHike,0.002,4.263,0.2344,Não,Muito fraca
+RelationshipSatisfactionLevel,TotalWorkingYears,0.001,0.232,0.9723,Não,Muito fraca
+RelationshipSatisfactionLevel,TrainingTimesLastYear,0.0,0.058,0.9963,Não,Muito fraca
+RelationshipSatisfactionLevel,YearsAtCompany,0.002,4.114,0.2494,Não,Muito fraca
+RelationshipSatisfactionLevel,YearsInCurrentRole,0.003,5.091,0.1653,Não,Muito fraca
+RelationshipSatisfactionLevel,YearsSinceLastPromotion,0.007,11.606,0.0089,Sim,Muito fraca
+RelationshipSatisfactionLevel,YearsWithCurrManager,0.004,5.817,0.1209,Não,Muito fraca
+RelationshipSatisfactionLevel,AttritionFlag,0.004,5.238,0.1552,Não,Muito fraca
+WorkLifeBalanceLevel,Age,0.0,0.045,0.9975,Não,Muito fraca
+WorkLifeBalanceLevel,DailyRate,0.002,2.76,0.4301,Não,Muito fraca
+WorkLifeBalanceLevel,DistanceFromHome,0.002,2.225,0.527,Não,Muito fraca
+WorkLifeBalanceLevel,HourlyRate,0.001,1.981,0.5765,Não,Muito fraca
+WorkLifeBalanceLevel,MonthlyIncome,0.001,2.025,0.5672,Não,Muito fraca
+WorkLifeBalanceLevel,MonthlyRate,0.001,1.311,0.7264,Não,Muito fraca
+WorkLifeBalanceLevel,NumCompaniesWorked,0.003,5.03,0.1696,Não,Muito fraca
+WorkLifeBalanceLevel,PercentSalaryHike,0.002,3.199,0.362,Não,Muito fraca
+WorkLifeBalanceLevel,TotalWorkingYears,0.001,0.602,0.8959,Não,Muito fraca
+WorkLifeBalanceLevel,TrainingTimesLastYear,0.001,1.875,0.5987,Não,Muito fraca
+WorkLifeBalanceLevel,YearsAtCompany,0.001,1.818,0.611,Não,Muito fraca
+WorkLifeBalanceLevel,YearsInCurrentRole,0.003,2.14,0.5439,Não,Muito fraca
+WorkLifeBalanceLevel,YearsSinceLastPromotion,0.001,2.892,0.4086,Não,Muito fraca
+WorkLifeBalanceLevel,YearsWithCurrManager,0.0,0.544,0.9092,Não,Muito fraca
+WorkLifeBalanceLevel,AttritionFlag,0.011,16.314,0.001,Sim,Fraca

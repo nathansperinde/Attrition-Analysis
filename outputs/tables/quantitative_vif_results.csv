@@ -1,0 +1,15 @@
+Feature,VIF,Multicollinearity
+TotalWorkingYears,4.646,Baixa
+YearsAtCompany,4.564,Baixa
+YearsWithCurrManager,2.748,Baixa
+YearsInCurrentRole,2.685,Baixa
+MonthlyIncome,2.529,Baixa
+Age,1.99,Baixa
+YearsSinceLastPromotion,1.669,Baixa
+NumCompaniesWorked,1.243,Baixa
+DailyRate,1.01,Baixa
+MonthlyRate,1.008,Baixa
+DistanceFromHome,1.007,Baixa
+TrainingTimesLastYear,1.007,Baixa
+PercentSalaryHike,1.006,Baixa
+HourlyRate,1.004,Baixa

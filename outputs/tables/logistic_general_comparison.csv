@@ -1,0 +1,31 @@
+Variable_Set,Model,Threshold,Accuracy,Precision,Recall,F1-score,AUC,N_Numeric_Variables,N_Categorical_Variables,N_Features_After_Dummies
+Modelo 1 — Função Profissional,Logistic Regression,0.5,0.862,0.727,0.225,0.344,0.781,0,8,26
+Modelo 1 — Função Profissional,Logistic Regression Balanced,0.5,0.728,0.331,0.676,0.444,0.782,0,8,26
+Modelo 2 — Nível Hierárquico,Logistic Regression,0.5,0.857,0.667,0.225,0.337,0.819,0,8,22
+Modelo 2 — Nível Hierárquico,Logistic Regression Balanced,0.5,0.773,0.393,0.746,0.515,0.818,0,8,22
+Modelo 3 — Faixa Salarial,Logistic Regression,0.5,0.864,0.789,0.211,0.333,0.796,0,8,21
+Modelo 3 — Faixa Salarial,Logistic Regression Balanced,0.5,0.746,0.353,0.69,0.467,0.795,0,8,21
+Modelo 4 — Trajetória Organizacional,Logistic Regression,0.5,0.855,0.64,0.225,0.333,0.779,0,8,22
+Modelo 4 — Trajetória Organizacional,Logistic Regression Balanced,0.5,0.735,0.328,0.62,0.429,0.774,0,8,22
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression,0.5,0.857,0.722,0.183,0.292,0.796,0,9,24
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression Balanced,0.5,0.726,0.333,0.704,0.452,0.796,0,9,24
+Modelo 6 — Perfil Pessoal,Logistic Regression,0.5,0.859,0.696,0.225,0.34,0.809,0,9,24
+Modelo 6 — Perfil Pessoal,Logistic Regression Balanced,0.5,0.757,0.368,0.704,0.483,0.806,0,9,24
+Modelo 7 — Reduzido Conservador,Logistic Regression,0.5,0.857,1.0,0.113,0.203,0.784,0,7,18
+Modelo 7 — Reduzido Conservador,Logistic Regression Balanced,0.5,0.728,0.331,0.676,0.444,0.781,0,7,18
+Modelo 1 — Função Profissional Misto,Logistic Regression,0.5,0.871,0.75,0.296,0.424,0.785,3,7,26
+Modelo 1 — Função Profissional Misto,Logistic Regression Balanced,0.5,0.748,0.353,0.676,0.464,0.782,3,7,26
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression,0.5,0.864,0.677,0.296,0.412,0.833,3,8,25
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression Balanced,0.5,0.773,0.393,0.746,0.515,0.832,3,8,25
+Modelo 3 — Rendimento Quantitativo,Logistic Regression,0.5,0.862,0.727,0.225,0.344,0.798,4,6,19
+Modelo 3 — Rendimento Quantitativo,Logistic Regression Balanced,0.5,0.76,0.378,0.761,0.505,0.797,4,6,19
+Modelo 4 — Experiência Profissional,Logistic Regression,0.5,0.866,0.714,0.282,0.404,0.799,4,6,19
+Modelo 4 — Experiência Profissional,Logistic Regression Balanced,0.5,0.766,0.377,0.69,0.488,0.796,4,6,19
+Modelo 5 — Antiguidade Organizacional,Logistic Regression,0.5,0.857,0.7,0.197,0.308,0.784,5,6,20
+Modelo 5 — Antiguidade Organizacional,Logistic Regression Balanced,0.5,0.766,0.379,0.704,0.493,0.782,5,6,20
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression,0.5,0.859,0.68,0.239,0.354,0.811,3,8,24
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression Balanced,0.5,0.755,0.363,0.69,0.476,0.806,3,8,24
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression,0.5,0.855,0.769,0.141,0.238,0.785,3,6,18
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression Balanced,0.5,0.735,0.333,0.648,0.44,0.781,3,6,18
+Modelo 8 — Integrado Multidimensional,Logistic Regression,0.5,0.88,0.696,0.451,0.547,0.816,7,11,43
+Modelo 8 — Integrado Multidimensional,Logistic Regression Balanced,0.5,0.778,0.392,0.69,0.5,0.813,7,11,43

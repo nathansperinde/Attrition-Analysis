@@ -1,0 +1,21 @@
+Variable_Set,Model,Best_Score,Scoring,Best_Params,N_Parameter_Combinations_Tested,N_Numeric_Variables,N_Categorical_Variables,N_Features_After_Dummies
+Modelo 8 — Integrado Multidimensional,Logistic Regression,0.542,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 100}",10,7,11,43
+Modelo 8 — Integrado Multidimensional,Logistic Regression Balanced,0.531,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 10}",10,7,11,43
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression Balanced,0.484,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 10}",10,3,8,25
+Modelo 4 — Trajetória Organizacional,Logistic Regression Balanced,0.482,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 1}",10,0,8,22
+Modelo 6 — Perfil Pessoal,Logistic Regression Balanced,0.47,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 10}",10,0,9,24
+Modelo 4 — Experiência Profissional,Logistic Regression Balanced,0.467,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 10}",10,4,6,19
+Modelo 5 — Antiguidade Organizacional,Logistic Regression Balanced,0.465,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 1}",10,5,6,20
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression Balanced,0.465,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 10}",10,0,9,24
+Modelo 6 — Perfil Pessoal e Condições de Trabalho,Logistic Regression Balanced,0.465,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 100}",10,3,8,24
+Modelo 1 — Função Profissional,Logistic Regression Balanced,0.46,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 1}",10,0,8,26
+Modelo 1 — Função Profissional Misto,Logistic Regression Balanced,0.455,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 1}",10,3,7,26
+Modelo 2 — Nível Hierárquico,Logistic Regression Balanced,0.451,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 1}",10,0,8,22
+Modelo 3 — Rendimento Quantitativo,Logistic Regression Balanced,0.451,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 100}",10,4,6,19
+Modelo 3 — Faixa Salarial,Logistic Regression Balanced,0.442,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 10}",10,0,8,21
+Modelo 5 — Estabilidade e Benefícios,Logistic Regression,0.428,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 100}",10,0,9,24
+Modelo 7 — Reduzido Conservador Misto,Logistic Regression Balanced,0.425,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l2', 'classifier__C': 1}",10,3,6,18
+Modelo 7 — Reduzido Conservador,Logistic Regression Balanced,0.414,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 0.1}",10,0,7,18
+Modelo 2 — Nível Hierárquico e Benefícios,Logistic Regression,0.405,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 10}",10,3,8,25
+Modelo 4 — Trajetória Organizacional,Logistic Regression,0.401,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 10}",10,0,8,22
+Modelo 1 — Função Profissional Misto,Logistic Regression,0.401,f1,"{'classifier__solver': 'liblinear', 'classifier__penalty': 'l1', 'classifier__C': 10}",10,3,7,26

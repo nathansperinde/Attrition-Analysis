@@ -1,0 +1,87 @@
+Feature,VIF,Multicollinearity
+MonthlyIncome,47.69,Forte
+Department_Sales,45.596,Forte
+Department_Research & Development,45.582,Forte
+EducationField_Life Sciences,24.806,Forte
+EducationField_Medical,22.316,Forte
+DistanceGroup_21-30,19.921,Forte
+DistanceFromHome,19.827,Forte
+TenureGroup_10+,18.49,Forte
+CareerStage_Late career,17.932,Forte
+AgeGroup_46-55,16.829,Forte
+JobRole_Sales Executive,15.133,Forte
+TotalWorkingYears,14.26,Forte
+AgeGroup_36-45,13.477,Forte
+JobLevelGroup_Executive Level,13.185,Forte
+RoleStabilityGroup_8+,12.82,Forte
+Age,12.297,Forte
+TenureGroup_6-10,12.257,Forte
+YearsSinceLastPromotion,12.159,Forte
+JobLevelGroup_Senior Level,12.079,Forte
+EducationField_Marketing,11.219,Forte
+IncomeGroup_Low,10.71,Forte
+YearsInCurrentRole,10.559,Forte
+YearsAtCompany,9.734,Moderada
+PromotionDelayGroup_5+ years,9.23,Moderada
+EducationField_Technical Degree,9.147,Moderada
+RoleStabilityGroup_4-7,8.704,Moderada
+DistanceGroup_11-20,8.417,Moderada
+CareerStage_Experienced,7.792,Moderada
+JobRole_Human Resources,7.578,Moderada
+StockOption_No Options,7.304,Moderada
+IncomeGroup_Very High,7.18,Moderada
+JobLevelGroup_Mid Level,7.036,Moderada
+TenureGroup_4-5,7.005,Moderada
+AgeGroup_56-65,6.946,Moderada
+AgeGroup_26-35,6.837,Moderada
+EducationField_Other,6.256,Moderada
+JobRole_Sales Representative,6.246,Moderada
+RoleStabilityGroup_2-3,5.956,Moderada
+TenureGroup_2-3,5.765,Moderada
+IncomeGroup_Medium,5.625,Moderada
+JobRole_Manager,5.379,Moderada
+JobLevelGroup_Junior Level,5.212,Moderada
+StockOption_Low,5.095,Moderada
+WorkLifeBalanceLevel_Better,5.06,Moderada
+JobRole_Research Scientist,4.647,Baixa
+MaritalStatus_Single,4.521,Baixa
+WorkLifeBalanceLevel_Good,4.321,Baixa
+JobRole_Laboratory Technician,4.275,Baixa
+CareerStage_Mid career,4.195,Baixa
+JobRole_Research Director,3.608,Baixa
+YearsWithCurrManager,3.592,Baixa
+DistanceGroup_6-10,3.258,Baixa
+WorkLifeBalanceLevel_Best,2.756,Baixa
+StockOption_Medium,2.711,Baixa
+PercentSalaryHike,2.647,Baixa
+PerformanceRatingLevel_Outstanding,2.614,Baixa
+CareerStage_Entry-level,2.452,Baixa
+BusinessTravel_Travel_Rarely,2.439,Baixa
+BusinessTravel_Travel_Frequently,2.43,Baixa
+PromotionDelayGroup_3-5 years,2.192,Baixa
+PromotionDelayGroup_Promoted this year,2.078,Baixa
+JobRole_Manufacturing Director,1.991,Baixa
+MaritalStatus_Married,1.942,Baixa
+SatisfactionLevel_Very High,1.466,Baixa
+RelationshipSatisfactionLevel_Very High,1.453,Baixa
+EnvironmentSatisfactionLevel_Very High,1.442,Baixa
+NumCompaniesWorked,1.42,Baixa
+EnvironmentSatisfactionLevel_Low,1.401,Baixa
+SatisfactionLevel_Low,1.398,Baixa
+SatisfactionLevel_Medium,1.393,Baixa
+EnvironmentSatisfactionLevel_Medium,1.392,Baixa
+RelationshipSatisfactionLevel_Low,1.39,Baixa
+RelationshipSatisfactionLevel_Medium,1.371,Baixa
+EducationLevel_Master,1.362,Baixa
+EducationLevel_College,1.294,Baixa
+EducationLevel_Below College,1.282,Baixa
+EducationLevel_Doctor,1.121,Baixa
+JobInvolvementLevel_Medium,1.12,Baixa
+JobInvolvementLevel_Very High,1.115,Baixa
+JobInvolvementLevel_Low,1.089,Baixa
+TrainingTimesLastYear,1.074,Baixa
+DailyRate,1.065,Baixa
+Gender_Male,1.064,Baixa
+MonthlyRate,1.06,Baixa
+OverTime_Yes,1.055,Baixa
+HourlyRate,1.049,Baixa

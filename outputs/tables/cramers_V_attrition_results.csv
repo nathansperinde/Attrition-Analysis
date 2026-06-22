@@ -1,0 +1,24 @@
+Primary_Variable,Secondary_Variable,Cramers_V,p_value,Significativo,Association
+Attrition,CareerStage,0.245,0.0,Sim,Moderada
+Attrition,OverTime,0.244,0.0,Sim,Moderada
+Attrition,JobRole,0.242,0.0,Sim,Moderada
+Attrition,TenureGroup,0.227,0.0,Sim,Moderada
+Attrition,JobLevelGroup,0.222,0.0,Sim,Moderada
+Attrition,IncomeGroup,0.209,0.0,Sim,Moderada
+Attrition,StockOption,0.203,0.0,Sim,Moderada
+Attrition,AgeGroup,0.201,0.0,Sim,Moderada
+Attrition,RoleStabilityGroup,0.183,0.0,Sim,Fraca
+Attrition,MaritalStatus,0.177,0.0,Sim,Fraca
+Attrition,JobInvolvementLevel,0.139,0.0,Sim,Fraca
+Attrition,BusinessTravel,0.128,0.0,Sim,Fraca
+Attrition,EnvironmentSatisfactionLevel,0.124,0.0001,Sim,Fraca
+Attrition,SatisfactionLevel,0.109,0.0006,Sim,Fraca
+Attrition,WorkLifeBalanceLevel,0.105,0.001,Sim,Fraca
+Attrition,EducationField,0.104,0.0068,Sim,Fraca
+Attrition,DistanceGroup,0.088,0.0098,Sim,Muito fraca
+Attrition,Department,0.086,0.0045,Sim,Muito fraca
+Attrition,PromotionDelayGroup,0.075,0.0395,Sim,Muito fraca
+Attrition,RelationshipSatisfactionLevel,0.06,0.155,Não,Muito fraca
+Attrition,EducationLevel,0.046,0.5455,Não,Muito fraca
+Attrition,Gender,0.028,0.2906,Não,Muito fraca
+Attrition,PerformanceRatingLevel,0.0,0.9901,Não,Muito fraca

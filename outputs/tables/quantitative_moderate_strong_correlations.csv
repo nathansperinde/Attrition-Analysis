@@ -1,0 +1,19 @@
+Variable_1,Variable_2,Correlation,Abs_Correlation,p_value,Significativo,Association
+YearsAtCompany,YearsInCurrentRole,0.854,0.854,0.0,Sim,Muito forte
+YearsAtCompany,YearsWithCurrManager,0.843,0.843,0.0,Sim,Muito forte
+YearsInCurrentRole,YearsWithCurrManager,0.725,0.725,0.0,Sim,Muito forte
+MonthlyIncome,TotalWorkingYears,0.71,0.71,0.0,Sim,Muito forte
+Age,TotalWorkingYears,0.657,0.657,0.0,Sim,Forte
+TotalWorkingYears,YearsAtCompany,0.594,0.594,0.0,Sim,Forte
+YearsAtCompany,YearsSinceLastPromotion,0.52,0.52,0.0,Sim,Forte
+YearsInCurrentRole,YearsSinceLastPromotion,0.506,0.506,0.0,Sim,Forte
+TotalWorkingYears,YearsWithCurrManager,0.495,0.495,0.0,Sim,Moderada
+TotalWorkingYears,YearsInCurrentRole,0.493,0.493,0.0,Sim,Moderada
+Age,MonthlyIncome,0.472,0.472,0.0,Sim,Moderada
+YearsSinceLastPromotion,YearsWithCurrManager,0.467,0.467,0.0,Sim,Moderada
+MonthlyIncome,YearsAtCompany,0.464,0.464,0.0,Sim,Moderada
+MonthlyIncome,YearsInCurrentRole,0.395,0.395,0.0,Sim,Moderada
+MonthlyIncome,YearsWithCurrManager,0.365,0.365,0.0,Sim,Moderada
+Age,NumCompaniesWorked,0.353,0.353,0.0,Sim,Moderada
+TotalWorkingYears,YearsSinceLastPromotion,0.335,0.335,0.0,Sim,Moderada
+NumCompaniesWorked,TotalWorkingYears,0.315,0.315,0.0,Sim,Moderada

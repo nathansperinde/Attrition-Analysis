@@ -1,0 +1,15 @@
+Feature,Correlation,Abs_Correlation,p_value,Significativo,Association
+TotalWorkingYears,-0.199,0.199,0.0,Sim,Fraca
+MonthlyIncome,-0.198,0.198,0.0,Sim,Fraca
+YearsAtCompany,-0.19,0.19,0.0,Sim,Fraca
+YearsInCurrentRole,-0.181,0.181,0.0,Sim,Fraca
+YearsWithCurrManager,-0.175,0.175,0.0,Sim,Fraca
+Age,-0.171,0.171,0.0,Sim,Fraca
+DistanceFromHome,0.079,0.079,0.0024,Sim,Fraca
+DailyRate,-0.057,0.057,0.0289,Sim,Fraca
+YearsSinceLastPromotion,-0.053,0.053,0.0411,Sim,Fraca
+TrainingTimesLastYear,-0.052,0.052,0.0473,Sim,Fraca
+NumCompaniesWorked,0.031,0.031,0.2425,Não,Fraca
+PercentSalaryHike,-0.024,0.024,0.3656,Não,Fraca
+MonthlyRate,0.015,0.015,0.5589,Não,Fraca
+HourlyRate,-0.007,0.007,0.7977,Não,Fraca
