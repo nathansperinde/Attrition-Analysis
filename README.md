@@ -1,16 +1,16 @@
 # Employee Attrition Analysis
 
-This project analyzes employee attrition using Python, combining exploratory data analysis, statistical methods, feature selection strategies, Logistic Regression modeling and model interpretability techniques.
+This project analyzes employee attrition using Python, combining exploratory data analysis, statistical methods, feature selection strategies, Logistic Regression modeling, threshold optimization and model interpretability techniques.
 
-The main goal is to identify patterns associated with employee turnover and evaluate Logistic Regression approaches capable of estimating the probability of attrition.
+The main goal is to identify patterns associated with employee turnover and evaluate interpretable Logistic Regression models capable of supporting employee attrition analysis from both predictive and business-oriented perspectives.
 
 ## Project Overview
 
 Employee attrition is an important organizational issue because it can affect productivity, hiring costs, team stability and long-term workforce planning.
 
-This project follows a structured data science workflow, starting with exploratory and statistical analysis, followed by variable selection, Logistic Regression model comparison, cross-validation, hyperparameter tuning, threshold optimization and model interpretation.
+This project follows a structured data science workflow, starting with data preparation and exploratory analysis, followed by statistical tests, variable selection, Logistic Regression modeling, cross-validation, hyperparameter tuning, threshold optimization, model interpretation and business-oriented conclusions.
 
-The project is still under development. The final model refinement, final interpretation of the results and business-oriented insights are not yet completed.
+The final analysis focuses not only on predictive performance, but also on interpretability. Since employee attrition is a sensitive human resources topic, the models are treated as decision-support tools rather than automatic decision-making systems.
 
 ## Objectives
 
@@ -23,6 +23,7 @@ The project is still under development. The final model refinement, final interp
 * Optimize selected Logistic Regression combinations through hyperparameter tuning.
 * Test different classification thresholds.
 * Interpret model behavior using Logistic Regression coefficients and Odds Ratios.
+* Translate model results into business-oriented insights and practical recommendations.
 
 ## Data Source
 
@@ -175,6 +176,77 @@ Model interpretation was performed using Logistic Regression coefficients and Od
 
 These techniques help explain which variables contribute most to attrition prediction and whether each variable increases or decreases the estimated odds of employee attrition.
 
+### 11. Executive Summary and Business Interpretation
+
+The final stage consolidated the main model results, limitations, business implications and final conclusions.
+
+The analysis was translated into practical insights related to workload, business travel, job involvement, satisfaction, compensation, benefits, career level, commuting distance and work-life balance.
+
+## Final Results
+
+The results suggest that employee attrition is associated with multiple organizational, job-related and individual-context dimensions.
+
+The main factors identified in the analysis include:
+
+* workload and overtime;
+* frequent business travel;
+* low job involvement;
+* low job satisfaction and low environment satisfaction;
+* limited access to benefits, such as stock options;
+* lower income;
+* lower job level;
+* poorer work-life balance;
+* greater distance from home.
+
+These results should be interpreted as associations identified in this dataset, not as direct causal effects.
+
+The project identified two practical modeling strategies:
+
+### Balanced and Interpretable Strategy
+
+The first strategy uses `Modelo 2 — Nível Hierárquico e Benefícios` with balanced Logistic Regression and a classification threshold of `0.71`.
+
+This strategy is recommended when the objective is to obtain a more stable, explainable and balanced decision-support tool.
+
+### Recall-Oriented Strategy
+
+The second strategy uses `Modelo 3 — Faixa Salarial` with balanced Logistic Regression and a classification threshold of `0.58`.
+
+This strategy is recommended when the priority is to reduce false negatives and identify more employees who may be at risk of leaving, even if this increases the number of false positives.
+
+This approach may be useful in contexts where failing to identify a potential leaver is considered more costly than incorrectly flagging an employee as at risk.
+
+## Business Implications
+
+From a business perspective, the model may support retention strategies by helping organizations identify groups of employees who appear to be more vulnerable to attrition.
+
+The results may be useful for guiding:
+
+* workload monitoring;
+* employee engagement initiatives;
+* satisfaction tracking;
+* benefits and compensation review;
+* career development;
+* internal mobility;
+* flexible work policies;
+* work-life balance initiatives.
+
+The model should be used as a decision-support tool, not as an automatic decision-making system. Any practical application should include human evaluation, contextual analysis and ethical consideration.
+
+## Limitations
+
+This analysis has some limitations that should be considered when interpreting the results.
+
+First, the dataset is imbalanced, which makes the identification of attrition cases more challenging.
+
+Second, several variables are correlated with each other, especially variables related to job level, income, career stage, tenure and role stability. For this reason, some predictors should not be interpreted in isolation.
+
+Third, the results should be interpreted as associations, not causal effects. The model can identify patterns related to attrition, but it cannot prove that a specific factor directly causes employees to leave.
+
+Fourth, some variables are specific to the structure of this dataset. For example, business travel, stock options and distance from home should be interpreted as contextual indicators rather than universal predictors of turnover.
+
+Finally, turnover is a complex and context-dependent phenomenon. The relevance of each factor may vary according to industry, role, labour market conditions, organizational culture and individual circumstances.
+
 ## Technologies Used
 
 * Python
@@ -203,9 +275,13 @@ These techniques help explain which variables contribute most to attrition predi
 │   │   ├── 02_categorical_analysis.ipynb
 │   │   ├── 03_quantitative_analysis.ipynb
 │   │   └── 04_mixed_analysis.ipynb
-│   └── modeling/
-│       ├── 01_log_regression.ipynb
-│       └── 02_models_comparison.ipynb
+│   ├── modeling/
+│   │   ├── 01_log_regression.ipynb
+│   │   └── 02_models_comparison.ipynb
+│   └── results/
+│       └── 01_executive_summary.ipynb
+├── outputs/
+│   └── tables/...
 ├── src/
 │   └── attrition_analysis/
 │       ├── __init__.py
@@ -239,7 +315,21 @@ uv sync
 
 Run the notebooks using VS Code or Jupyter Notebook.
 
-## Current Status
+A suggested execution order is:
+
+```text
+notebooks/eda/01_data_preparation.ipynb
+notebooks/eda/02_categorical_analysis.ipynb
+notebooks/eda/03_quantitative_analysis.ipynb
+notebooks/eda/04_mixed_analysis.ipynb
+notebooks/modeling/01_log_regression.ipynb
+notebooks/modeling/02_models_comparison.ipynb
+notebooks/results/01_executive_summary.ipynb
+```
+
+## Project Status
+
+The project is completed.
 
 Completed stages:
 
@@ -254,20 +344,29 @@ Completed stages:
 * Hyperparameter tuning
 * Threshold optimization
 * Model interpretation using coefficients and Odds Ratios
+* Final model strategy selection
+* Business implications
+* Limitations
+* Final conclusions
 
-In progress:
+## Final Conclusion
 
-* Final model refinement
-* Final selection of the best Logistic Regression approach
-* Consolidated interpretation of results
-* Business-oriented insight summary
-* Final conclusions and recommendations
+This project suggests that Logistic Regression can provide a useful balance between predictive performance and interpretability in employee attrition analysis.
 
-## Next Steps
+The results indicate that attrition should be understood as a multidimensional phenomenon, associated with workload, job attitudes, satisfaction, benefits, compensation, career level, commuting distance and work-life balance.
 
-The next steps of the project include refining the final Logistic Regression model selection, consolidating the main predictive findings and translating the results into business-oriented insights.
+Although a broader multidimensional model achieved strong predictive performance, it was kept only as a control model because it was more complex and less suitable for business interpretation.
 
-The final analysis should explain not only which Logistic Regression configuration performs best, but also which factors appear to be most relevant for employee attrition and how these findings can support decision-making.
+Overall, the project supports the use of Logistic Regression as a practical and interpretable approach for employee attrition analysis, especially when the goal is to support organizational decision-making rather than automate decisions about employees.
+
+## Possible Future Improvements
+
+Future work could include:
+
+* Testing the model on more recent or organization-specific HR datasets.
+* Comparing the results with other interpretable machine learning methods.
+* Including external variables related to labour market conditions or organizational context.
+* Developing a dashboard to communicate attrition risk patterns to decision-makers.
 
 ## Author
 
